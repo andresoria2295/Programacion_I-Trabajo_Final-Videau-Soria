@@ -30,6 +30,23 @@ class Transporte{
         // of doing something like :tablename and binding that like bindParam(":tablename", $this->table_name);
     }
 
+    public function read(){
+        $query = "SELECT sistema_id, nombre, pais_procedencia FROM ". $this->table_name ." WHERE nombre=:sname";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindParam(":sname", $this->nombre);
+        $stmt->execute();
+        
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // set values to object properties
+        $this->nombre = $row['nombre'];
+        $this->pais = $row['pais_procedencia'];
+        $this->id = $row['sistema_id'];
+        $this->createdAt = $row['created'];
+        $this->updatedAt = $row['updated'];
+    }
+
 }
 
 ?>
