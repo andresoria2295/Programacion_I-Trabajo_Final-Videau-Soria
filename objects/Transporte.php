@@ -36,10 +36,10 @@ class Transporte{
         $stmt->bindParam(":sname", $this->nombre);
         $stmt->execute();
         
-        // get retrieved row
+        // Get retrieved row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
-        // set values to object properties
+        // Set values to object properties
         $this->nombre = $row['nombre'];
         $this->pais = $row['pais_procedencia'];
         $this->id = $row['sistema_id'];
