@@ -47,6 +47,27 @@ class Transporte{
         $this->updatedAt = $row['updated'];
     }
 
+    public function create(){
+        $query = "INSERT INTO ". $this->table_name ." SET nombre=:nombre, pais_procedencia=:pais, created=:created";
+        $stmt = $this->connection->prepare($query);
+
+        // Sanitize - Security!
+        $this->nombre=htmlspecialchars(strip_tags($this->nombre));
+        $this->pais=htmlspecialchars(strip_tags($this->pais));
+        $this->createdAt=htmlspecialchars(strip_tags($this->createdAt));
+
+        // Bind
+        $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":pais", $this->pais);
+        $stmt->bindParam(":created", $this->createdAt);
+
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
 
 ?>
