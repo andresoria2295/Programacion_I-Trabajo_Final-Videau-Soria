@@ -44,6 +44,6 @@ if($transport->nombre!=null){
     echo json_encode(array("message" => "El servicio de transporte no existe."));
 }
 
-
+// Ex. http://localhost/proyecto/api/sistemas_transporte/read.php/?nombre=Cabify
 
 ?>

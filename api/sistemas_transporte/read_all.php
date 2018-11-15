@@ -16,7 +16,7 @@ $db = $database->getConnection();
 $transport = new Transporte($db);
 
 // Query
-$stmt = $transport->readAll();
+$stmt = $transport->readAll(); // returns statement.
 $num = $stmt->rowCount();
 
 // Are there records?
@@ -30,17 +30,20 @@ if($num>0){
         $transport_item = array(
             "id"=>$sistema_id,
             "nombre"=>$nombre,
-            "pais"=>$pais_procedencia
+            "pais"=>$pais_procedencia,
+            "created"=>$created,
+            "updated"=>$updated
         );
-
+        // Push record found to array
         array_push($transportArray["records"], $transport_item);
     }
-
+    // Echo array in JSON format
     echo json_encode($transportArray);
 } else {
     echo json_encode(
-        array("message" => "No transport found.")
+        array("message" => "No hay sistemas de transporte guardados.")
     );
 }
 
+// Ex. http://localhost/proyecto/api/sistemas_transporte/read_all.php
 ?>
