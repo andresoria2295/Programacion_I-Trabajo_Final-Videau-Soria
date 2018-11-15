@@ -83,7 +83,25 @@ class Transporte{
         $stmt->bindParam(":pais", $this->pais);
         $stmt->bindParam(":id", $this->id);
 
-        // execute the query
+        // Execute query
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function delete(){
+        $query = "DELETE FROM ". $this->table_name . " WHERE sistema_id=:id";
+        $stmt = $this->connection->prepare($query);
+        
+        // Sanitize - Security!
+        $this->id=htmlspecialchars(strip_tags($this->id));
+
+        // Bind
+        $stmt->bindParam(":id", $this->id);
+
+        // Execute query
         if($stmt->execute()){
             return true;
         }else{
