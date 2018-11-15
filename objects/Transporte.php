@@ -68,6 +68,28 @@ class Transporte{
         }
     }
 
+    public function update(){
+        $query = "UPDATE ". $this->table_name ." SET nombre = :nombre, pais_procedencia = :pais WHERE sistema_id = :id";
+        
+        $stmt = $this->connection->prepare($query);
+
+        // Sanitize - Security!
+        $this->nombre=htmlspecialchars(strip_tags($this->nombre));
+        $this->pais=htmlspecialchars(strip_tags($this->pais));
+        $this->id=htmlspecialchars(strip_tags($this->id));
+
+        // Bind
+        $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":pais", $this->pais);
+        $stmt->bindParam(":id", $this->id);
+
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 
 ?>
