@@ -20,11 +20,16 @@ class Transporte{
     }
 
     // CRUD operations
+
     public function readAll(){
-        $query = "SELECT sistema_id, nombre, pais_procedencia FROM " . $this->table_name . " ORDER BY nombre";
+        $query = "SELECT sistema_id, nombre, pais_procedencia FROM ". $this->table_name ." ORDER BY nombre";
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
         return $stmt;
+        // NOTE: a table name cannot be a bound parameter... That's why I need to concatenate the table name instead
+        // of doing something like :tablename and binding that like bindParam(":tablename", $this->table_name);
     }
+
 }
+
 ?>
