@@ -23,6 +23,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 // Make sure data is not empty
 if(!empty($data->marca) && !empty($data->modelo) && !empty($data->patente) && !empty($data->sistema)){
+    // Setting object properties
     $vehicle->marca = $data->marca;
     $vehicle->modelo = $data->modelo;
     $vehicle->patente = $data->patente;

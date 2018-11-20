@@ -56,33 +56,29 @@ Class Vehiculo{
         $query_intermediate = "INSERT INTO ". $this->table2 ." SET vehiculo_id=:vehiculo_id, sistema_id=:sistema_id, created=:created";
         $stmt_intermediate = $this->connection->prepare($query_intermediate);
 
-        // Sanitize
+        // Bind parameters for main table
         $stmt->bindParam(":marca", $this->marca);
         $stmt->bindParam(":modelo", $this->modelo);
         $stmt->bindParam(":patente", $this->patente);
         $stmt->bindParam(":created", $this->created);
-
-        // Insert into main table
-        $stmt->execute();
-        $this->id = $this->connection->lastInsertId();
-        //echo json_encode(array("id" => $this->id, "marca" => $this->marca, "modelo" => $this->modelo, "patente" => $this->patente, "created" => $this->created));
         
-        // Insert into intermediate table
+        // Bind parameters for intermediate table
         $stmt_intermediate->bindParam(":vehiculo_id", $this->id);
         $stmt_intermediate->bindParam(":sistema_id", $this->sistema_id);
         $stmt_intermediate->bindParam(":created", $this->created);
 
-        if($stmt_intermediate->execute()){
-            //echo json_encode(array("message" => "SUCCESS", "id" => $this->id, "marca" => $this->marca, "modelo" => $this->modelo, "patente" => $this->patente, "created" => $this->created, "sistema_id" => $this->sistema_id));
-            return true;
-        }else{
-            //echo json_encode(array("message" => "FAILURE","id" => $this->id, "marca" => $this->marca, "modelo" => $this->modelo, "patente" => $this->patente, "created" => $this->created, "sistema_id" => $this->sistema_id));
-            return false;
+        // Insert into main table
+       
+        if($stmt->execute()){
+            // If it is inserted correctly. Retrieve the ID of the inserted record and set.
+            $this->id = $this->connection->lastInsertId();
+            if($stmt_intermediate->execute()){ // Insert record into intermediate table.
+                return true;
+            }else{
+                return false;
+            }
         }
-
-        // Execute query
-        /* CLIPBOARD CONTENT GOES HERE */
-        // TENEMOS EL ID DEL SISTEMA ($THIS->SISTEMAID), EL ID DEL AUTO ES AUTOGENERADO.
-
     }
+
+    
 }
