@@ -91,7 +91,7 @@ class Transporte{
         }
     }
 
-    public function delete(){
+    public function delete(){// Hay que hacer delete de todos los autos que tengan como sistema el que se está borrando
         $query = "DELETE FROM ". $this->table_name . " WHERE sistema_id=:id";
         $stmt = $this->connection->prepare($query);
         
