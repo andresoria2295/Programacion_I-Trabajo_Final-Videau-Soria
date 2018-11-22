@@ -31,7 +31,7 @@ class Transporte{
     }
 
     public function read(){
-        $query = "SELECT sistema_id, nombre, pais_procedencia FROM ". $this->table_name ." WHERE nombre=:sname";
+        $query = "SELECT sistema_id, nombre, pais_procedencia, created, updated FROM ". $this->table_name ." WHERE nombre=:sname";
         $stmt = $this->connection->prepare($query);
         $stmt->bindParam(":sname", $this->nombre);
         $stmt->execute();

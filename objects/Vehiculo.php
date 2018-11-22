@@ -75,7 +75,7 @@ Class Vehiculo{
 
     // Hace una funcion para leer por patente y otra para leer por id
     public function read(){
-         // Paso 1: Con la patente saco el id del vehiuclo de la tabla vehículo
+         // Paso 1: Con la patente saco el id del vehículo de la tabla vehículo
         $query1 = "SELECT vehiculo_id FROM vehiculo WHERE patente=:patente";
         $stmt = $this->connection->prepare($query1);
         $stmt->bindParam(":patente", $this->patente);
@@ -83,8 +83,6 @@ Class Vehiculo{
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $this->id = $result["vehiculo_id"];
-        
-        echo "Vehiculo id del paso 1: " . $this->id . "      ";
 
         // Paso 2: De la tabla intermedia saco el id del sistema
         $query2 = "SELECT sistema_id FROM sistema_vehiculo WHERE vehiculo_id=:vehiculo_id";
@@ -94,8 +92,6 @@ Class Vehiculo{
 
         $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
         $this->sistema_id = $result2["sistema_id"];
-
-        echo "Sistema_id del paso 2: " . $this->sistema_id;
 
         // Paso 3: Con el id del sistema y el id del vehiculo hago un left join de las tablas de vehiculo y sistema
         $query3 = "SELECT s.nombre, v.marca, v.modelo, v.patente, v.created, v.updated FROM ". $this->table_name ." 
