@@ -22,18 +22,16 @@ Class Vehiculo{
     }
 
     // Utility functions
-    private function getSistemaId($argnombre){
-        $query = "SELECT sistema_id FROM sistema_transporte WHERE nombre=:nombre";
-        $statement = $this->connection->prepare($query);
-        // Sanitize
-        $nombre=htmlspecialchars(strip_tags($argnombre));
-        // Bind
-        $statement->bindParam(":nombre", $nombre);
-        if($statement->execute()){
-            $data = $statement->fetch(PDO::FETCH_ASSOC);
-            return $data["sistema_id"];
+    private function setVehiculoID(){
+        $query1 = "SELECT vehiculo_id FROM vehiculo WHERE patente=:patente";
+        $stmt = $this->connection->prepare($query1);
+        $stmt->bindParam(":patente", $this->patente);
+        if($stmt->execute()){
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->id = $result["vehiculo_id"];
+            return true;
         }else{
-            return 0;
+            return false;
         }
     }
 
@@ -120,26 +118,30 @@ Class Vehiculo{
 
     }
 
-    public function delete(){  
+    public function delete(){
+        // Set vehicle ID
+        $this->setVehiculoID();
+
         // Query intermediate
-        $query_intermediate = "DELETE FROM ". $this->table2." WHERE vehiculo_id=:id";
-        $stmt_intermediate = $connection->prepare($query_intermediate);
-       
+        $query_intermediate = "DELETE FROM ". $this->table2 ." WHERE vehiculo_id=:id";
+        $stmt_intermediate = $this->connection->prepare($query_intermediate);
         // Query main
         $query = "DELETE FROM ". $this->table_name ." WHERE vehiculo_id=:id";
-        $stmt = $connection->prepare($query);
-
-        // Bind parameters
+        $stmt = $this->connection->prepare($query);
+        // Sanitize
+        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->patente=htmlspecialchars(strip_tags($this->patente));
+        // Bind
         $stmt_intermediate->bindParam(":id", $this->id);
         $stmt->bindParam(":id", $this->id);
-
-        // Delete from intermediate table
+        
+        // Execution
         if($stmt_intermediate->execute() && $stmt->execute()){
             return true;
-        } else {
+        }else{
             return false;
         }
-        // TESTEAR
+
     }
 
     
