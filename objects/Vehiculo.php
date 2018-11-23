@@ -131,7 +131,44 @@ Class Vehiculo{
     }
 
     public function readAll(){
+        $arr = array();
 
+        // Paso 1: Con la patente saco el id del vehículo de la tabla vehículo
+        $query1 = "SELECT * FROM vehiculo";
+        $stmt = $this->connection->prepare($query1);
+        $stmt->execute();
+
+        while($result = $stmt->fetch(PDO::FETCH_ASSOC)){ // ESTO FUNCIONA BASTANTE BIEN
+            $this->id = $result["vehiculo_id"];
+            $this->marca = $result["marca"];
+            $this->modelo = $result["modelo"];
+            $this->patente = $result["patente"];
+            $this->created = $result["created"];
+            $this->updated = $result["updated"];
+
+            // Paso 2: De la tabla intermedia saco el id del sistema
+            $query2 = "SELECT * FROM sistema_vehiculo WHERE vehiculo_id=:vehiculo_id";
+            $stmt2 = $this->connection->prepare($query2);
+            $stmt2->bindParam(":vehiculo_id", $this->id);
+            $stmt2->execute();
+
+            $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+            $this->sistema_id = $result2["sistema_id"];
+            
+            // Paso 3: Con el id del sistema y el id del vehiculo hago un left join de las tablas de vehiculo y sistema
+            $query3 = "SELECT s.nombre, v.marca, v.modelo, v.patente, v.created, v.updated FROM ". $this->table_name ." 
+            v LEFT JOIN sistema_transporte s on s.sistema_id = :sid";
+            $stmt3 = $this->connection->prepare($query3);
+            $stmt3->bindParam(":sid", $this->sistema_id);
+            $stmt3->execute();
+            
+            $result3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+            $this->sistema_nombre = $result3["nombre"];
+            $aux = array("sistema"=>$this->sistema_nombre, "marca"=>$this->marca, "modelo"=>$this->modelo, "patente"=>$this->patente, "created"=>$this->created, "updated"=>$this->updated);
+            array_push($arr, $aux);
+        };
+        //print_r($arr);
+        return $arr;
     }
 
     public function update(){
@@ -163,5 +200,4 @@ Class Vehiculo{
         }
     }
 
-    
 }
