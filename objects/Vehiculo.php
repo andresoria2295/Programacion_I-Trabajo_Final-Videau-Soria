@@ -172,7 +172,27 @@ Class Vehiculo{
     }
 
     public function update(){
+        $query = "UPDATE ". $this->table_name ." SET marca = :marca, modelo = :modelo, patente = :patente WHERE vehiculo_id = :id";
+        $stmt = $this->connection->prepare($query);
 
+        // Sanitize - Security!
+        $this->marca=htmlspecialchars(strip_tags($this->marca));
+        $this->modelo=htmlspecialchars(strip_tags($this->modelo));
+        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->patente=htmlspecialchars(strip_tags($this->patente));
+
+        // Bind
+        $stmt->bindParam(":marca", $this->marca);
+        $stmt->bindParam(":modelo", $this->modelo);
+        $stmt->bindParam(":patente", $this->patente);
+        $stmt->bindParam(":id", $this->id);
+
+        // Execute query
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function delete(){
