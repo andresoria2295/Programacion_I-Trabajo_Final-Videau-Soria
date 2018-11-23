@@ -16,6 +16,7 @@ include_once '../../objects/Transporte.php';
 $database = new Database();
 $db = $database->getConnection();
 
+
 // Initialize object
 $transport = new Transporte($db);
 
