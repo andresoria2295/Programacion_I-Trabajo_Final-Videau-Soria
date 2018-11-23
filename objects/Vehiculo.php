@@ -35,6 +35,21 @@ Class Vehiculo{
         }
     }
 
+    private function checkSystemExistence(){
+        $query = "SELECT * FROM sistema_transporte WHERE sistema_id=:id";
+        $stmt = $this->connection->prepare($query);
+        $this->sistema_id=htmlspecialchars(strip_tags($this->sistema_id));
+        $stmt->bindParam(":id", $this->sistema_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$row){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    
     // CRUD
 
     public function create(){
@@ -59,15 +74,20 @@ Class Vehiculo{
         $stmt_intermediate->bindParam(":created", $this->created);
 
         // Insert into main table
-       
-        if($stmt->execute()){
-            // If it is inserted correctly. Retrieve the ID of the inserted record and set.
-            $this->id = $this->connection->lastInsertId();
-            if($stmt_intermediate->execute()){ // Insert record into intermediate table.
-                return true;
-            }else{
-                return false;
+        
+        if($this->checkSystemExistence()){ // Check if the transportation system exists
+            if($stmt->execute()){
+                // If it is inserted correctly. Retrieve the ID of the inserted record and set.
+                $this->id = $this->connection->lastInsertId();
+                if($stmt_intermediate->execute()){ // Insert record into intermediate table.
+                    return true;
+                }else{
+                    return false;
+                }
             }
+        }else{
+            echo json_encode(array("Message"=>"El ID del sistema especificado no existe"));
+            return false;
         }
     }
 
