@@ -23,36 +23,19 @@ class Transporte{
     // Utility functions
 
     private function deleteCars(){
-            $query = "SELECT vehiculo_id FROM vehiculo";
-            $stmt = $this->connection->prepare($query);
+        $query = "DELETE FROM vehiculo WHERE vehiculo_id NOT IN (SELECT vehiculo_id FROM sistema_vehiculo)";
+        $stmt = $this->connection->prepare($query);
+        try{
+            $this->connection->beginTransaction();
             $stmt->execute();
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $query2 = "SELECT * FROM sistema_vehiculo WHERE vehiculo_id=:id";
-                $stmt2 = $this->connection->prepare($query2);
-                $stmt2->bindParam(":id", $row["vehiculo_id"]);
-                $stmt2->execute();
-                $counter = 0;
-                while($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
-                    $counter++;
-                }
-                if($counter == 0){
-                    try{
-                        $query3 = "DELETE FROM vehiculo WHERE vehiculo_id=:id";
-                        $stmt3 = $this->connection->prepare($query3);
-                        $stmt3->bindParam(":id", $row["vehiculo_id"]);
-                        $stmt3->execute();
-                        
-                        break;
-                    } catch(Exception $e){
-                        echo "Error: " . $e;
-                        return false;
-                    }
-                }
-            
-            }
-
-        return true;
-        // Paso 2: Con cada entrada de vehículo, agarro el vehículo_id y recorro la tabla intermedia. Si no encuentro ningún vehículo_id de la tabla intermedia que coincida con el guardado, borro la fila de la tabla de vehículos.
+            if($this->connection->commit()){
+                return true;
+            };
+        }catch(Exception $e){
+            echo "Error: " . $e;
+            $this->connection->rollBack();
+            return false;
+        }
     }
 
     // CRUD operations
@@ -143,6 +126,7 @@ class Transporte{
 
         // Execute query
         if($stmt_intermediate->execute() && $stmt->execute()){
+            // Por qué no estoy usando transacciones acá? ...
             if($this->deleteCars()){
                 return true;
             }
