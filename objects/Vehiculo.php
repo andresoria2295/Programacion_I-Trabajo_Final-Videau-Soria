@@ -38,18 +38,22 @@ Class Vehiculo{
     private function checkSystemExistence(){
         $query = "SELECT * FROM sistema_transporte WHERE sistema_id=:id";
         $stmt = $this->connection->prepare($query);
-        $this->sistema_id=htmlspecialchars(strip_tags($this->sistema_id));
-        $stmt->bindParam(":id", $this->sistema_id);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if(!$row){
-            return false;
-        }else{
-            return true;
+        for($i=0; $i<count($this->sistema_id); $i++){
+            $this->sistema_id[$i]=htmlspecialchars(strip_tags($this->sistema_id[$i]));
+            $aux = $this->sistema_id[$i];
+            $stmt->bindParam(":id", $this->sistema_id[$i]);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if(!$row){
+                echo json_encode(Array("Message" => "Alguno de los sistemas de transporte no existe"));
+                return false;
+            }else{
+                break;
+            }
         }
+        return true;
     }
 
-    
     // CRUD
 
     public function create(){
@@ -69,106 +73,43 @@ Class Vehiculo{
         $stmt->bindParam(":created", $this->created);
         
         // Bind parameters for intermediate table
-        $stmt_intermediate->bindParam(":vehiculo_id", $this->id);
-        $stmt_intermediate->bindParam(":sistema_id", $this->sistema_id);
+        
         $stmt_intermediate->bindParam(":created", $this->created);
 
-        // Insert into main table
+        // Insertion
         
         if($this->checkSystemExistence()){ // Check if the transportation system exists
-            if($stmt->execute()){
-                // If it is inserted correctly. Retrieve the ID of the inserted record and set.
-                $this->id = $this->connection->lastInsertId();
-                if($stmt_intermediate->execute()){ // Insert record into intermediate table.
-                    return true;
-                }else{
-                    return false;
+            $this->id = $this->connection->lastInsertId(); // If it is inserted correctly. Retrieve the ID of the inserted record and set.
+            $stmt_intermediate->bindParam(":vehiculo_id", $this->id);
+            try{
+                $this->connection->beginTransaction();
+                $stmt->execute();
+                for($i=0; $i<count($this->sistema_id); $i++){
+                    $aux = $this->sistema_id[$i];
+                    echo "Sistema: ". $aux;
+                    $stmt_intermediate->bindParam(":sistema_id", $aux);
+                    $stmt_intermediate->execute();
                 }
+                if($this->connection->commit()){
+                    return true;
+                };
+            }catch(Exception $e){
+                $this->connection->rollBack();
+                //echo "Error: " . $e->getMessage();
+                return false;
             }
         }else{
-            echo json_encode(array("Message"=>"El ID del sistema especificado no existe"));
+            //echo json_encode(array("Message"=>"El ID del sistema especificado no existe"));
             return false;
         }
     }
 
-    // Hace una funcion para leer por patente y otra para leer por id
     public function read(){
-         // Paso 1: Con la patente saco el id del vehículo de la tabla vehículo
-        $query1 = "SELECT vehiculo_id FROM vehiculo WHERE patente=:patente";
-        $stmt = $this->connection->prepare($query1);
-        $stmt->bindParam(":patente", $this->patente);
-        $stmt->execute();
-
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->id = $result["vehiculo_id"];
-
-        // Paso 2: De la tabla intermedia saco el id del sistema
-        $query2 = "SELECT sistema_id FROM sistema_vehiculo WHERE vehiculo_id=:vehiculo_id";
-        $stmt2 = $this->connection->prepare($query2);
-        $stmt2->bindParam(":vehiculo_id", $this->id);
-        $stmt2->execute();
-
-        $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-        $this->sistema_id = $result2["sistema_id"];
-
-        // Paso 3: Con el id del sistema y el id del vehiculo hago un left join de las tablas de vehiculo y sistema
-        $query3 = "SELECT s.nombre, v.marca, v.modelo, v.patente, v.created, v.updated FROM ". $this->table_name ." 
-        v LEFT JOIN sistema_transporte s on s.sistema_id = :sid";
-        $stmt3 = $this->connection->prepare($query3);
-        $stmt3->bindParam(":sid", $this->sistema_id);
-        $stmt3->execute();
         
-        // Get retrieved row
-        $row = $stmt3->fetch(PDO::FETCH_ASSOC);
-
-         // Set values to object properties
-         $this->marca = $row['marca'];
-         $this->modelo = $row['modelo'];
-         $this->patente = $row["patente"];
-         $this->sistema_nombre = $row["nombre"];
-         $this->created = $row['created']; 
-         $this->updated = $row["updated"];
     }
 
     public function readAll(){
-        $arr = array();
-
-        // Paso 1: Con la patente saco el id del vehículo de la tabla vehículo
-        $query1 = "SELECT * FROM vehiculo";
-        $stmt = $this->connection->prepare($query1);
-        $stmt->execute();
-
-        while($result = $stmt->fetch(PDO::FETCH_ASSOC)){ // ESTO FUNCIONA BASTANTE BIEN
-            $this->id = $result["vehiculo_id"];
-            $this->marca = $result["marca"];
-            $this->modelo = $result["modelo"];
-            $this->patente = $result["patente"];
-            $this->created = $result["created"];
-            $this->updated = $result["updated"];
-
-            // Paso 2: De la tabla intermedia saco el id del sistema
-            $query2 = "SELECT * FROM sistema_vehiculo WHERE vehiculo_id=:vehiculo_id";
-            $stmt2 = $this->connection->prepare($query2);
-            $stmt2->bindParam(":vehiculo_id", $this->id);
-            $stmt2->execute();
-
-            $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-            $this->sistema_id = $result2["sistema_id"];
-            
-            // Paso 3: Con el id del sistema y el id del vehiculo hago un left join de las tablas de vehiculo y sistema
-            $query3 = "SELECT s.nombre, v.marca, v.modelo, v.patente, v.created, v.updated FROM ". $this->table_name ." 
-            v LEFT JOIN sistema_transporte s on s.sistema_id = :sid";
-            $stmt3 = $this->connection->prepare($query3);
-            $stmt3->bindParam(":sid", $this->sistema_id);
-            $stmt3->execute();
-            
-            $result3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-            $this->sistema_nombre = $result3["nombre"];
-            $aux = array("sistema"=>$this->sistema_nombre, "marca"=>$this->marca, "modelo"=>$this->modelo, "patente"=>$this->patente, "created"=>$this->created, "updated"=>$this->updated);
-            array_push($arr, $aux);
-        };
-        //print_r($arr);
-        return $arr;
+        
     }
 
     public function update(){

@@ -31,13 +31,11 @@ if(!empty($data->marca) && !empty($data->modelo) && !empty($data->patente) && !e
     //$vehicle->sistema_nombre = $data->sistema; Si quisiera poner el nombre en vez del id del sistema
     $vehicle->sistema_id = $data->sistema;
     $vehicle->created = date('Y-m-d H:i:s');
-    
     if($vehicle->create()){
         echo json_encode(array("message" => "Vehículo creado correctamente"));
     }else{
         echo json_encode(array("message" => "No se pudo crear el vehículo"));
     }
-    
 }else{ // if some of the fields are empty...
     echo json_encode(array("message" => "Datos insuficientes"));
 }
