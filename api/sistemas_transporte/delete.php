@@ -21,12 +21,13 @@ $transport = new Transporte($db);
 
 // Get POSTed data
 $data = json_decode(file_get_contents("php://input"));
+print_r($data);
 
-// set product id to be deleted
-$transport->id = $data->id;
  
 // delete the product
 if($data->id != null){
+    // set product id to be deleted
+    $transport->id = $data->id;
     if($transport->delete()){
         echo json_encode(array("message" => "Product was deleted."));
     }else{
