@@ -9,31 +9,33 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // Include database and object files
 include_once '../../config/Database.php';
-include_once '../../objects/Transporte.php';
+include_once '../../objects/Chofer.php';
 
 // Instantiate database object
 $database = new Database();
 $db = $database->getConnection();
 
 // Initialize object
-$transport = new Transporte($db);
+$driver = new Chofer($db);
 
 // Get POSTed data
 $data = json_decode(file_get_contents("php://input"));
 
 // Make sure data is not empty
-if( !empty($data->nombre) && !empty($data->pais_procedencia)){
+if( !empty($data->name) && !empty($data->surname) && !empty ($data->dni) && !empty($data->email)){
     // Set property values
-    $transport->nombre = $data->nombre;
-    $transport->pais = $data->pais_procedencia;
-    $transport->createdAt = date('Y-m-d H:i:s');
+    $driver->name = $data->name;
+    $driver->surname = $data->surname;
+    $driver->dni = $data->dni;
+    $driver->email = $data->email;
+    $driver->created = date('Y-m-d H:i:s');
     // Create
-    if($transport->create()){
-        echo json_encode(array("message" => "Se creó el servicio de transporte."));
+    if($driver->create()){
+        echo json_encode(array("message" => "Se ha creado nuevo chofer."));
     } else {
-        echo json_encode(array("message" => "No se pudo crear el servicio."));
+        echo json_encode(array("message" => "No se ha creado chofer."));
     }
 } else {
     // Data incomplete
-    echo json_encode(array("message" => "No se pudo crear el servicio. Faltan datos."));
+    echo json_encode(array("message" => "No se ha creado chofer. Faltan datos."));
 }

@@ -6,7 +6,6 @@ class Transporte{
 
     // Table name
     private $table_name = "sistema_transporte";
-    private $table_2 = "sistema_vehiculo";
 
     // Table columns
     public $id;
@@ -20,24 +19,6 @@ class Transporte{
         $this->connection = $connection;
     }
 
-    // Utility functions
-
-    private function deleteCars(){
-        $query = "DELETE FROM vehiculo WHERE vehiculo_id NOT IN (SELECT vehiculo_id FROM sistema_vehiculo)";
-        $stmt = $this->connection->prepare($query);
-        try{
-            $this->connection->beginTransaction();
-            $stmt->execute();
-            if($this->connection->commit()){
-                return true;
-            };
-        }catch(Exception $e){
-            echo "Error: " . $e;
-            $this->connection->rollBack();
-            return false;
-        }
-    }
-
     // CRUD operations
 
     public function readAll(){
@@ -45,12 +26,12 @@ class Transporte{
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
         return $stmt;
-        // NOTE: a table name cannot be a bound parameter... That's why you need to concatenate the table name instead
+        // NOTE: a table name cannot be a bound parameter... That's why I need to concatenate the table name instead
         // of doing something like :tablename and binding that like bindParam(":tablename", $this->table_name);
     }
 
     public function read(){
-        $query = "SELECT sistema_id, nombre, pais_procedencia, created, updated FROM ". $this->table_name ." WHERE nombre=:sname";
+        $query = "SELECT sistema_id, nombre, pais_procedencia FROM ". $this->table_name ." WHERE nombre=:sname";
         $stmt = $this->connection->prepare($query);
         $stmt->bindParam(":sname", $this->nombre);
         $stmt->execute();
@@ -110,26 +91,19 @@ class Transporte{
         }
     }
 
-    public function delete(){// Hay que hacer delete de todos los autos que tengan como sistema el que se está borrando
+    public function delete(){
         $query = "DELETE FROM ". $this->table_name . " WHERE sistema_id=:id";
-        $query_intermediate = "DELETE FROM ". $this->table_2 ." WHERE sistema_id=:id";
-
         $stmt = $this->connection->prepare($query);
-        $stmt_intermediate = $this->connection->prepare($query_intermediate);
-
-        // Sanitize
+        
+        // Sanitize - Security!
         $this->id=htmlspecialchars(strip_tags($this->id));
 
         // Bind
         $stmt->bindParam(":id", $this->id);
-        $stmt_intermediate->bindParam(":id", $this->id);
 
         // Execute query
-        if($stmt_intermediate->execute() && $stmt->execute()){
-            // Por qué no estoy usando transacciones acá? ...
-            if($this->deleteCars()){
-                return true;
-            }
+        if($stmt->execute()){
+            return true;
         }else{
             return false;
         }

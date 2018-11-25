@@ -9,30 +9,30 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // Include database and object files
 include_once '../../config/Database.php';
-include_once '../../objects/Transporte.php';
+include_once '../../objects/Chofer.php';
 
 // Instantiate database object
 $database = new Database();
 $db = $database->getConnection();
 
 // Initialize object
-$transport = new Transporte($db);
+$driver = new Chofer($db);
 
 // Get POSTed data
 $data = json_decode(file_get_contents("php://input"));
 
 // set product id to be deleted
-$transport->id = $data->id;
- 
+$driver->driver_id = $data->driver_id;
+
 // delete the product
-if($data->id != null){
-    if($transport->delete()){
-        echo json_encode(array("message" => "Product was deleted."));
+if($data->driver_id != null){
+    if($driver->delete()){
+        echo json_encode(array("message" => "Se ha eliminado chofer seleccionado."));
     }else{
-        echo json_encode(array("message" => "Unable to delete product."));
+        echo json_encode(array("message" => "No es posible eliminar chofer."));
     }
 } else {
-    echo json_encode(array("message" => "Faltan datos"));
+    echo json_encode(array("message" => "No es posible eliminar chofer. Faltan datos"));
 }
 
 

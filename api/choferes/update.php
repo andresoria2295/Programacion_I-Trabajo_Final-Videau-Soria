@@ -9,31 +9,31 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // Include database and object files
 include_once '../../config/Database.php';
-include_once '../../objects/Transporte.php';
+include_once '../../objects/Chofer.php';
 
 // Instantiate database object
 $database = new Database();
 $db = $database->getConnection();
 
 // Initialize object
-$transport = new Transporte($db);
+$driver = new Chofer($db);
 
 // Get POSTed data
 $data = json_decode(file_get_contents("php://input"));
+// Set property values
+$driver->driver_id = $data->driver_id;
+$driver->name = $data->name;
+$driver->surname = $data->surname;
+$driver->dni = $data->dni;
+$driver->email = $data->email;
+$driver->vehicle_id = $data->vehicle_id;
+$driver->system_id = $data->system_id;
 
-// set product id to be deleted
-$transport->id = $data->id;
- 
-// delete the product
-if($data->id != null){
-    if($transport->delete()){
-        echo json_encode(array("message" => "Product was deleted."));
-    }else{
-        echo json_encode(array("message" => "Unable to delete product."));
-    }
-} else {
-    echo json_encode(array("message" => "Faltan datos"));
+// update the product
+if($driver->update()){
+    echo json_encode(array("message" => "Chofer ha sido acualizado."));
+}else{
+     echo json_encode(array("message" => "No es posible actualizar chofer."));
 }
-
 
 ?>
