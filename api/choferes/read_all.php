@@ -7,8 +7,6 @@ header("Content-Type: application/json; charset=UTF-8");
 // Include database and object files
 include_once '../../config/Database.php';
 include_once '../../objects/Chofer.php';
-
-// Instantiate database object
 $database = new Database();
 $db = $database->getConnection();
 
@@ -28,13 +26,13 @@ if($num>0){
         // Extract row... This will make $row["name"] to just $name
         extract($row);
         $driver_item = array(
-            "chofer_id"=>$sistema_id,
-            "apellido"=>$surname,
-            "nombre"=>$name,
-            "documento"=>$dni,
+            "chofer_id"=>$chofer_id,
+            "apellido"=>$apellido,
+            "nombre"=>$nombre,
+            "documento"=>$documento,
             "email"=>$email,
-            "vehiculo_id"=>$vehicle_id,
-            "sistema_id"=>$system_id,
+            "vehiculo_id"=>$vehiculo_id,
+            "sistema_id"=>$sistema_id,
             "created"=>$created,
             "updated"=>$updated
         );
@@ -42,10 +40,10 @@ if($num>0){
         array_push($driver_array["records"], $driver_item);
     }
     // Echo array in JSON format
-    echo json_encode($driver_aArray);
+    echo json_encode($driver_array);
 } else {
     echo json_encode(
-        array("message" => "No hay choferes guardados.")
+        array("message" => "No se encuentran choferes guardados.")
     );
 }
 

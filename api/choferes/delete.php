@@ -29,10 +29,10 @@ if($data->driver_id != null){
     if($driver->delete()){
         echo json_encode(array("message" => "Se ha eliminado chofer seleccionado."));
     }else{
-        echo json_encode(array("message" => "No es posible eliminar chofer."));
+        echo json_encode(array("message" => "No es posible eliminar chofer seleccionado."));
     }
 } else {
-    echo json_encode(array("message" => "No es posible eliminar chofer. Faltan datos"));
+    echo json_encode(array("message" => "No es posible eliminar chofer seleccionado. Faltan datos"));
 }
 
 

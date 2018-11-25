@@ -21,21 +21,18 @@ $driver = new Chofer($db);
 // Get POSTed data
 $data = json_decode(file_get_contents("php://input"));
 
-// Make sure data is not empty
-if( !empty($data->name) && !empty($data->surname) && !empty ($data->dni) && !empty($data->email)){
-    // Set property values
-    $driver->name = $data->name;
-    $driver->surname = $data->surname;
-    $driver->dni = $data->dni;
+
+if(isset($data->nombre) && isset($data->apellido) && isset($data->documento) && isset($data->sistema) && isset($data->vehiculo) && isset($data->email)){
+    //print_r($driver);
+    $driver->name = $data->nombre;
+    $driver->surname = $data->apellido;
+    $driver->dni = $data->documento;
     $driver->email = $data->email;
-    $driver->created = date('Y-m-d H:i:s');
-    // Create
-    if($driver->create()){
-        echo json_encode(array("message" => "Se ha creado nuevo chofer."));
-    } else {
-        echo json_encode(array("message" => "No se ha creado chofer."));
-    }
-} else {
-    // Data incomplete
-    echo json_encode(array("message" => "No se ha creado chofer. Faltan datos."));
+    $driver->vehicle_id = $data->vehiculo;
+    $driver->system_id = $data->sistema;
+    echo "IN_CLASS PROPERTY: " . $driver->name;
+    echo "IN_CLASS PROPERTY: " . $driver->surname;
+    echo "IN_CLASS PROPERTY: " . $driver->dni;
+    echo "  vehicle_id: " . $driver->vehicle_id;
+    echo "  system_id: " . $driver->system_id;
 }

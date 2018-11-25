@@ -31,9 +31,9 @@ $driver->system_id = $data->system_id;
 
 // update the product
 if($driver->update()){
-    echo json_encode(array("message" => "Chofer ha sido acualizado."));
+    echo json_encode(array("message" => "Se ha acualizado chofer seleccionado."));
 }else{
-     echo json_encode(array("message" => "No es posible actualizar chofer."));
+     echo json_encode(array("message" => "No es posible actualizar chofer seleccionado."));
 }
 
 ?>

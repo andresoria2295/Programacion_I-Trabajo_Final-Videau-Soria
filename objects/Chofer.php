@@ -43,16 +43,16 @@ Class Chofer{
     // CRUD operations
 
     public function readAll(){
-        $query = "SELECT chofer_id, apellido, nombre, documento, email, vehiculo_id, sistema_id FROM ". $this->table_name ." ORDER BY apellido";
+        $query = "SELECT * FROM ". $this->table_name ." ORDER BY nombre";
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
         return $stmt;
     }
 
     public function read(){
-        $query = "SELECT chofer_id, nombre, apellido, documento, email, vehiculo_id, sistema_id FROM ". $this->table_name ." WHERE apellido=:sapellido";
+        $query = "SELECT chofer_id, nombre, apellido, documento, email, vehiculo_id, sistema_id FROM ". $this->table_name ." WHERE apellido=:apellido";
         $stmt = $this->connection->prepare($query);
-        $stmt->bindParam(":sapellido", $this->surname);
+        $stmt->bindParam(":apellido", $this->surname);
         $stmt->execute();
 
         // Get retrieved row
@@ -71,26 +71,28 @@ Class Chofer{
     }
 
     public function create(){
-        $query = "INSERT INTO ". $this->table_name ." SET nombre=:nom, apellido=:ape, documento=:doc, email=:mail, created=:created";
+        $query = "INSERT INTO chofer SET nombre=:nombre, apellido=:apellido, documento=:documento, email=:email, vehiculo_id=:vid, sistema_id=:sid, created=:created";
         $stmt = $this->connection->prepare($query);
-
-        // Sanitize - Security
+        // Sanitize
         $this->name=htmlspecialchars(strip_tags($this->name));
         $this->surname=htmlspecialchars(strip_tags($this->surname));
         $this->dni=htmlspecialchars(strip_tags($this->dni));
         $this->email=htmlspecialchars(strip_tags($this->email));
-        $this->created=htmlspecialchars(strip_tags($this->created));
-
+        $this->system_id=htmlspecialchars(strip_tags($this->system_id));
+        $this->vehicle_id = htmlspecialchars(strip_tags($this->vehicle_id));
         // Bind
-        $stmt->bindParam(":nom", $this->name);
-        $stmt->bindParam(":ape", $this->surname);
-        $stmt->bindParam(":doc", $this->dni);
-        $stmt->bindParam(":mail", $this->email);
-        $stmt->bindParam(":created", $this->created);
-
+        $stmt->bindParam(":nombre", $this->name);
+        $stmt->bindParam(":apellido", $this->surname);
+        $stmt->bindParam(":dni", $this->dni);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":vid", $this->vehicle_id);
+        $stmt->bindParam(":sid", $this->system_id);
+        // Execution
         if($stmt->execute()){
+            echo json_encode(Array("Works"=>"works"));
             return true;
         }else{
+            echo json_encode(Array("Works"=>"Nope"));
             return false;
         }
     }
@@ -123,14 +125,14 @@ Class Chofer{
     }
 
     public function delete(){
-        $query = "DELETE FROM ". $this->table_name . " WHERE sistema_id=:id";
+        $query = "DELETE FROM ". $this->table_name . " WHERE chofer_id=:id";
         $stmt = $this->connection->prepare($query);
 
         // Sanitize - Security
-        $this->system_id=htmlspecialchars(strip_tags($this->system_id));
+        $this->system_id=htmlspecialchars(strip_tags($this->driver_id));
 
         // Bind
-        $stmt->bindParam(":id", $this->system_id);
+        $stmt->bindParam(":id", $this->driver_id);
 
         // Execute query
         if($stmt->execute()){

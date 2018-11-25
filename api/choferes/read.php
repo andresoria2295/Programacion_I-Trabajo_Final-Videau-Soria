@@ -45,7 +45,7 @@ if($driver->surname!=null){
     echo json_encode($driver_array);
 }else{
     // Data does not exist.
-    echo json_encode(array("message" => "Chofer no existe."));
+    echo json_encode(array("message" => "Chofer no existente."));
 }
 
 // Ex. http://localhost/proyecto/api/sistemas_transporte/read.php/?nombre=Cabify
