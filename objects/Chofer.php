@@ -40,6 +40,24 @@ Class Chofer{
     }
     */
 
+    private function checkDriverExistence(){
+        $query = "SELECT * FROM chofer WHERE chofer_id=:id";
+        $stmt = $this->connection->prepare($query);
+        // Sanitize
+        $this->driver_id = htmlspecialchars(strip_tags($this->driver_id));
+        // Binding
+        $stmt->bindParam(":id", $this->driver_id);
+        // Execute
+        $stmt->execute();
+        // Fetching    
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$row){
+            echo json_encode(Array("Message" => "El chofer no existe"));
+            return false;
+        }else{
+            return true;
+        }
+    }
     private function checkSystemExistence(){
         $query = "SELECT * FROM sistema_transporte WHERE sistema_id=:id";
         $stmt = $this->connection->prepare($query);
@@ -159,11 +177,10 @@ Class Chofer{
 
     public function update(){
         $query = "UPDATE ". $this->table_name ." SET nombre = :nom, apellido = :ape, documento = :doc, email = :mail, sistema_id=:sid, vehiculo_id=:vid WHERE chofer_id = :id";
-
         $stmt = $this->connection->prepare($query);
 
         // Sanitize - Security
-        $this->id = htmlspecialchars(strip_tags($this-id));
+        $this->driver_id = htmlspecialchars(strip_tags($this->driver_id));
         $this->name=htmlspecialchars(strip_tags($this->name));
         $this->surname=htmlspecialchars(strip_tags($this->surname));
         $this->dni=htmlspecialchars(strip_tags($this->dni));
@@ -181,29 +198,34 @@ Class Chofer{
         $stmt->bindParam(":vid", $this->vehicle_id);
 
         // Execute query
-        if($stmt->execute()){
-            return true;
-        }else{
+        if($this->checkVehicleExistence() && $this->checkSystemExistence() && $this->checkDriverExistence()){
+            if($stmt->execute()){
+                return true;
+            }else{
+                return false;
+            }
+        } else {
             return false;
         }
     }
 
     public function delete(){
-        $query = "DELETE FROM ". $this->table_name . " WHERE chofer_id=:id";
+        $query = "DELETE FROM ". $this->table_name ." WHERE chofer_id=:id ";
         $stmt = $this->connection->prepare($query);
-
         // Sanitize - Security
         $this->system_id=htmlspecialchars(strip_tags($this->driver_id));
 
         // Bind
         $stmt->bindParam(":id", $this->driver_id);
 
-        // Execute query
-        if($stmt->execute()){
+        //echo json_encode(Array("Mensaje"=>$stmt->rowCount()));
+
+        //Execute query
+        if($this->checkDriverExistence() && $stmt->execute()){
             return true;
         }else{
             return false;
-        }
+        };
     }
 }
 ?>

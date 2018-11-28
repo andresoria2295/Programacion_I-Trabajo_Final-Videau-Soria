@@ -25,19 +25,23 @@ $data = json_decode(file_get_contents("php://input"));
 //$driver->getData($data->id);
 
 // Set new property values
-$driver->driver_id = $data->id;
-$driver->name = $data->nombre;
-$driver->surname = $data->apellido;
-$driver->dni = $data->documento;
-$driver->email = $data->email;
-$driver->vehicle_id = $data->vehiculo_id;
-$driver->system_id = $data->sistema_id;
+if(isset($data->id)){
+    //echo json_encode(array("mensaje"=>"data id isset"));
+    $driver->driver_id = $data->id;
+    $driver->name = $data->nombre;
+    $driver->surname = $data->apellido;
+    $driver->dni = $data->documento;
+    $driver->email = $data->email;
+    $driver->vehicle_id = $data->vehiculo_id;
+    $driver->system_id = $data->sistema_id;
 
-// update the product
-if($driver->update()){
-    echo json_encode(array("message" => "Se ha acualizado chofer seleccionado."));
-}else{
-     echo json_encode(array("message" => "No es posible actualizar chofer seleccionado."));
+    // update the product
+    if($driver->update()){
+        echo json_encode(array("message" => "Se ha acualizado chofer seleccionado."));
+    }else{
+        echo json_encode(array("message" => "No es posible actualizar chofer seleccionado."));
+    }
 }
+
 
 ?>
