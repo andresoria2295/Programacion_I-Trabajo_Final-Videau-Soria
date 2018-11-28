@@ -20,14 +20,18 @@ $driver = new Chofer($db);
 
 // Get POSTed data
 $data = json_decode(file_get_contents("php://input"));
-// Set property values
-$driver->driver_id = $data->driver_id;
-$driver->name = $data->name;
-$driver->surname = $data->surname;
-$driver->dni = $data->dni;
+// Set defaults
+
+//$driver->getData($data->id);
+
+// Set new property values
+$driver->driver_id = $data->id;
+$driver->name = $data->nombre;
+$driver->surname = $data->apellido;
+$driver->dni = $data->documento;
 $driver->email = $data->email;
-$driver->vehicle_id = $data->vehicle_id;
-$driver->system_id = $data->system_id;
+$driver->vehicle_id = $data->vehiculo_id;
+$driver->system_id = $data->sistema_id;
 
 // update the product
 if($driver->update()){

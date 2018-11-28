@@ -23,16 +23,20 @@ $data = json_decode(file_get_contents("php://input"));
 
 
 if(isset($data->nombre) && isset($data->apellido) && isset($data->documento) && isset($data->sistema) && isset($data->vehiculo) && isset($data->email)){
-    //print_r($driver);
     $driver->name = $data->nombre;
     $driver->surname = $data->apellido;
     $driver->dni = $data->documento;
     $driver->email = $data->email;
     $driver->vehicle_id = $data->vehiculo;
     $driver->system_id = $data->sistema;
-    echo "IN_CLASS PROPERTY: " . $driver->name;
-    echo "IN_CLASS PROPERTY: " . $driver->surname;
-    echo "IN_CLASS PROPERTY: " . $driver->dni;
-    echo "  vehicle_id: " . $driver->vehicle_id;
-    echo "  system_id: " . $driver->system_id;
+    $driver->created = date('Y-m-d H:i:s');
+
+    if($driver->create()){
+        echo json_encode(Array("Message" => "Se creo el chofer correctamente"));
+    }else{
+        echo json_encode(Array("Message" => "No se pudo crear el chofer"));
+    };
+
+}else{
+    echo json_encode(Array("Message" => "Faltan datos"));
 }

@@ -2,6 +2,10 @@
 
 // Required headers
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
+header('Content-Type: application/json');
 header("Content-Type: application/json; charset=UTF-8");
 
 // Include database and object files
@@ -17,11 +21,11 @@ $driver = new Chofer($db);
 $stmt = $driver->readAll(); // returns statement.
 $num = $stmt->rowCount();
 
+$driver_array = array();
+    $driver_array["records"] = array();
 // Are there records?
 if($num>0){
-    $driver_array = array();
-    $driver_array["records"] = array();
-
+    
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         // Extract row... This will make $row["name"] to just $name
         extract($row);
