@@ -1,68 +1,40 @@
 <?php
-// required headers
+// Required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-require_once '../../libs/vendor/autoload.php';
-use \Firebase\JWT\JWT;
-// files needed to connect to database
-include_once '../../config/Database.php';
-// instantiate vehiculo object
-include_once '../../objects/user.php';
-// get database connection
+
+// Include objects
+include_once "../../config/Database.php";
+include_once "../../objects/Usuario.php";
+include_once "../../objects/Token.php";
+
+// Database connection and instantiation
 $database = new Database();
 $db = $database->getConnection();
-// instantiate product object
-$user = new User($db);
-// get posted data
+$user = new Usuario($db);
+$Token = new Token();
+
+// Get data
 $data = json_decode(file_get_contents("php://input"));
-// set product property values
-if(
-    !empty($data->username) &&
-    !empty($data->password)
-){
-// set product property values
-$user->username = $data->username;
-$user->password = $data->password;
-$user_exists = $user->userExists();
-// generate json web token
-include_once '../../config/core.php';
-// check if email exists and if password is correct
-if($user_exists && password_verify($data->password, $user->password)){
-    $token = array(
-       "iss" => $iss,
-       "aud" => $aud,
-       "iat" => $iat,
-       "nbf" => $nbf,
-       "data" => array(
-           "user_id" => $user->user_id,
-           "username" => $user->username
-       )
-    );
-    // set response code
-    http_response_code(200);
-    // generate jwt
-    $jwt = JWT::encode($token, $key);
-    echo json_encode(
-            array(
-                "message" => "Successful login.",
-                "jwt" => $jwt
-            )
-        );
-}
-else{
-   // set response code
-   http_response_code(401);
-   // tell the user login failed
-   echo json_encode(array("message" => "Login failed."));
-}
-}
-// tell the user data is incomplete
-else{
-    // set response code - 400 bad request
-    http_response_code(400);
-    // tell the user
+
+// Set object properties
+if(!empty($data->username) && !empty($data->password)){ // Generate JSON Web Token if the data is correct
+    $user->username = $data->username;
+    if(password_verify($data->password, $user->getHash())){ // If password given matches with the decrypted password hash from database...
+        // Data array
+        $jwt_data = array("user_id" => $user->id, "username" => $user->username);
+        // Generate JWT
+        $tkn = $Token->generateToken($jwt_data);
+        // Extract data from JWT
+        $usr = $Token->decodeToken($tkn)["username"];
+        // Send results.
+        echo json_encode(array("JWT" => $tkn, "username" => $usr));
+    } else {
+        echo json_encode(array("message" => "Login failed. Password incorrect"));
+    };
+}else{
     echo json_encode(array("message" => "Unable to login. Data is incomplete."));
 }
