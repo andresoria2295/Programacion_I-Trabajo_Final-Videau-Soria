@@ -79,14 +79,13 @@ Class Vehiculo{
         // Insert into main table
         
         if($this->checkSystemExistence()){ // Check if the transportation system exists
-            $this->id = $this->connection->lastInsertId(); // If it is inserted correctly. Retrieve the ID of the inserted record and set.
             $stmt_intermediate->bindParam(":vehiculo_id", $this->id);
             try{
                 $this->connection->beginTransaction();
                 $stmt->execute();
+                $this->id = $this->connection->lastInsertId(); // If it is inserted correctly. Retrieve the ID of the inserted record and set.
                 for($i=0; $i<count($this->sistema_id); $i++){
                     $aux = $this->sistema_id[$i];
-                    echo "Sistema: ". $aux;
                     $stmt_intermediate->bindParam(":sistema_id", $aux);
                     $stmt_intermediate->execute();
                 }
@@ -95,11 +94,11 @@ Class Vehiculo{
                 };
             }catch(Exception $e){
                 $this->connection->rollBack();
-                //echo "Error: " . $e->getMessage();
+                echo json_encode(Array("Error" => $e->getMessage()));
                 return false;
             }
         }else{
-            //echo json_encode(array("Message"=>"El ID del sistema especificado no existe"));
+            echo json_encode(array("Message"=>"El ID del sistema especificado no existe"));
             return false;
         }
     }
