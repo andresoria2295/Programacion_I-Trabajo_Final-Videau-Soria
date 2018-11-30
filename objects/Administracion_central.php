@@ -8,9 +8,14 @@
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <br><br>
+    <br>
     <?php
       session_start();
+
+      if (empty($_SESSION['usuario'])) {
+        header('location: Retorno_login.php');
+        exit;
+      }
      ?>
      <div class="container-fluid">
        <div class="row">
@@ -18,6 +23,10 @@
          </div>
          <div class="col-md-6" class="central">
            <form class="adm_user" action="Administracion_usuarios.php" method="POST">
+             <?php
+                 echo "Usuario: {$_SESSION['usuario']}";
+              ?>
+             <br><br><br>
              <h3>Panel de Administración</h3>
              <br>
              <button type="submit" class="btn btn-secondary btn-lg btn-block">Administración de Usuarios</button>
