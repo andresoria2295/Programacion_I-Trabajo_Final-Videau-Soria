@@ -10,11 +10,11 @@ class Token{
 
     public function generateToken($data){
         $issuedAt = time();
-        $expirationTime = $issuedAt + 60;
+        $expirationTime = $issuedAt + 30;
 
         $payload = array(
-            "issued" => $issuedAt,
-            "expiration" => $expirationTime,
+            "iat" => $issuedAt, // Los campos DEBEN ser llamados "iat" y "exp".
+            "exp" => $expirationTime,
             "data" => $data
         );
         
@@ -27,7 +27,24 @@ class Token{
         return (array) $data;
     }
 
-    //public function validateToken($got);
+    public function validateToken($jwt){
+        if($jwt){
+            try {
+                // Decode jwt
+                $this->decodeToken($jwt);
+                echo json_encode(array("message" => "Access granted."));
+                return true;
+            }catch (Exception $e){ // If decode fails, it means JWT is invalid
+              echo json_encode(array("message" => "Access denied.", "error" => $e->getMessage()));
+              //return false;
+              exit; // Cambiar exit por return false para hacer auditorías. Si se termina el programa, no puedo hacer auditoría.
+            }
+        } else { // JWT is empty...
+            echo json_encode(array("message" => "Access denied."));
+            //return false
+            exit; // Cambiar exit por return false para hacer auditorías. Si se termina el programa, no puedo hacer auditoría.
+        };
+    }
 };
 
 ?>

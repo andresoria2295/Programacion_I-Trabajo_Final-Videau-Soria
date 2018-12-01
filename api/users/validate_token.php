@@ -2,56 +2,38 @@
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-require_once '../../libs/vendor/autoload.php';
-use \Firebase\JWT\JWT;
-include_once '../../config/core.php';
-// get posted data
+include_once '../../objects/Token.php';
+
+$Token = new Token();
+
+// Get JWT
 $data = json_decode(file_get_contents("php://input"));
-// get jwt
+
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     $jwt = $_GET["jwt"];
 }else{
     $jwt = isset($data->jwt) ? $data->jwt : "";
 }
 
-// if jwt is not empty
+// If JWT is not empty...
 if($jwt){
-    // if decode succeed, show user details
     try {
-        // decode jwt
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-        // set response code
-        http_response_code(200);
-        // show user details
-        
-        /*echo json_encode(array(
-            "message" => "Access granted.",
-            "data" => $decoded->data
-        ));*/
-    }
-    // if decode fails, it means jwt is invalid
-  catch (Exception $e){
-      // set response code
-      http_response_code(401);
-      // tell the user access denied  & show error message
-      echo json_encode(array(
-          "message" => "Access denied.",
-          "error" => $e->getMessage()
-      ));
+        // Decode jwt
+        $Token->decodeToken($jwt);
+        echo json_encode(array("message" => "Access granted."));
+    }catch (Exception $e){ // If decode fails, it means JWT is invalid
+      echo json_encode(array("message" => "Access denied.", "error" => $e->getMessage()));
       exit;
-  }
-}
-// show error message if jwt is empty
-else{
-    // set response code
-    http_response_code(401);
-    // tell the user access denied
+      //return false;
+    }
+} else { // JWT is empty...
     echo json_encode(array("message" => "Access denied."));
     exit;
-}
+    //return false;
+};
 
 ?>

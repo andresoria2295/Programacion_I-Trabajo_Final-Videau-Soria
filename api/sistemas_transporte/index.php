@@ -1,6 +1,4 @@
 <?php
-include_once "..\users\validate_token.php";
-
 // Required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -11,6 +9,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // Include database and object files
 include_once '../../config/Database.php';
 include_once '../../objects/Transporte.php';
+include_once '../../objects/Token.php';
+
 
 // Instantiate database object
 $database = new Database();
@@ -19,11 +19,16 @@ $db = $database->getConnection();
 // Initialize object
 $transport = new Transporte($db);
 
+// Token
+$Token = new Token();
+
+
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
         // Get POSTed data
         $data = json_decode(file_get_contents("php://input"));
-
+        // Check if JWT passed is valid.
+        $Token->validateToken($data->jwt);
         // Make sure data is not empty
         if( !empty($data->nombre) && !empty($data->pais_procedencia)){
         // Set property values
@@ -44,6 +49,10 @@ switch($_SERVER["REQUEST_METHOD"]){
         break;
     
     case "GET":
+
+        // Check if JWT passed is valid.
+        $Token->validateToken($_GET["jwt"]);
+
         if(isset($_GET["nombre"])){
             $transport->nombre = $_GET["nombre"];
 
@@ -105,6 +114,8 @@ switch($_SERVER["REQUEST_METHOD"]){
     case "PUT":
         // Get data
         $data = json_decode(file_get_contents("php://input"));
+        // Check if JWT passed is valid.
+        $Token->validateToken($data->jwt);
         // Set property values
         $transport->id = $data->id;
         $transport->nombre = $data->nombre;
@@ -122,7 +133,8 @@ switch($_SERVER["REQUEST_METHOD"]){
     case "DELETE":
         // Get data
         $data = json_decode(file_get_contents("php://input"));
-        
+        // Check if JWT passed is valid.
+        $Token->validateToken($data->jwt);
         // delete the product
         if($data->id != null){
             // set product id to be deleted
