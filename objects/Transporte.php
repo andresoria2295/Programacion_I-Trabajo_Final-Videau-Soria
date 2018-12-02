@@ -6,6 +6,7 @@ class Transporte{
 
     // Table name
     private $table_name = "sistema_transporte";
+    private $table_2 = "sistema_vehiculo";
 
     // Table columns
     public $id;
@@ -22,7 +23,7 @@ class Transporte{
     // CRUD operations
 
     public function readAll(){
-        $query = "SELECT sistema_id, nombre, pais_procedencia FROM ". $this->table_name ." ORDER BY nombre";
+        $query = "SELECT sistema_id, nombre, pais_procedencia, created, updated FROM ". $this->table_name ." ORDER BY nombre";
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
         return $stmt;
@@ -31,7 +32,7 @@ class Transporte{
     }
 
     public function read(){
-        $query = "SELECT sistema_id, nombre, pais_procedencia FROM ". $this->table_name ." WHERE nombre=:sname";
+        $query = "SELECT sistema_id, nombre, pais_procedencia, created, updated FROM ". $this->table_name ." WHERE nombre=:sname";
         $stmt = $this->connection->prepare($query);
         $stmt->bindParam(":sname", $this->nombre);
         $stmt->execute();
@@ -91,20 +92,45 @@ class Transporte{
         }
     }
 
-    public function delete(){
-        $query = "DELETE FROM ". $this->table_name . " WHERE sistema_id=:id";
+    private function deleteCars(){
+        $query = "DELETE FROM vehiculo WHERE vehiculo_id NOT IN (SELECT vehiculo_id FROM sistema_vehiculo)";
         $stmt = $this->connection->prepare($query);
-        
-        // Sanitize - Security!
-        $this->id=htmlspecialchars(strip_tags($this->id));
+        try{
+            $this->connection->beginTransaction();
+            $stmt->execute();
+            if($this->connection->commit()){
+                return true;
+            };
+        }catch(Exception $e){
+            echo "Error: " . $e;
+            $this->connection->rollBack();
+            return false;
+        }
+    }
 
+    public function delete(){// Hay que hacer delete de todos los autos que tengan como sistema el que se está borrando
+        $query = "DELETE FROM ". $this->table_name . " WHERE sistema_id=:id";
+        $query_intermediate = "DELETE FROM ". $this->table_2 ." WHERE sistema_id=:id";
+
+        $stmt = $this->connection->prepare($query);
+        $stmt_intermediate = $this->connection->prepare($query_intermediate);
+        // Sanitize
+        $this->id=htmlspecialchars(strip_tags($this->id));
         // Bind
         $stmt->bindParam(":id", $this->id);
+        $stmt_intermediate->bindParam(":id", $this->id);
 
-        // Execute query
-        if($stmt->execute()){
-            return true;
-        }else{
+        try{
+            $this->connection->beginTransaction();
+            $stmt_intermediate->execute();
+            $stmt->execute();
+            if($this->connection->commit()){
+                if($this->deleteCars()){
+                    return true;
+                }
+            }
+        }catch(Exception $e){
+            $this->connection->rollBack();
             return false;
         }
     }
