@@ -1,5 +1,6 @@
 body{
-  background: url(../imagenes/img2.jpg); /*localiza imagen en carpeta*/
+  background: url(../imagenes/img5.jpg); /*localiza imagen en carpeta*/
+  background-size: cover;
   background-repeat: no-repeat;
   /*background-repeat: repeat-x;  repite la imagen de manera horizontal*/
   background-attachment: fixed; /*Permite hacer un scroll en la imagen*/

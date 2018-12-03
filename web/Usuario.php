@@ -6,6 +6,7 @@
       Panel de usuario
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/adm_style.css" />
   </head>
   <body>
     <br>
@@ -26,7 +27,7 @@
              <?php
                  echo "Usuario acreditado: {$_SESSION['usuario']}";
               ?>
-             <br><br><br>
+             <br><br><br><br><br>
              <h3>Plataforma de transporte</h3>
              <br>
              <button type="submit" class="btn btn-primary btn-lg btn-block">Registro de Choferes</button>
@@ -40,7 +41,14 @@
              <button type="submit" class="btn btn-primary btn-lg btn-block">Sistemas de Transporte</button>
            </form>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-1">
+            <form class="quit" action="Login.html" method="POST">
+              <button type="submit" class="btn btn-secondary">Salir</button>
+            </form>
           </div>
         </div>
      </div>

@@ -6,6 +6,7 @@
       Nuevo registro
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
   </head>
   <body>
     <div class="container-fluid">
@@ -65,13 +66,21 @@
                 <input type="text" class="form-control" id="vehicle_id" placeholder="unidad">
               </div>
             </div>
-            <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Aceptar</button>
+            <button type="submit" class="btn btn-outline-primary">Aceptar</button>
           </form>
           <br><br><br>
         </div>
-
+        <div class="col-md-1">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-1">
         </div>
+        <div class="col-md-1">
+          <br>
+          <form class="quit" action="Login.html" method="POST">
+            <button type="submit" class="btn btn-outline-secondary">Salir</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

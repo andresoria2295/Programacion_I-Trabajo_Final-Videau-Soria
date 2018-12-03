@@ -6,6 +6,7 @@
       Registro de choferes
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/registers_style.css" />
   </head>
   <body>
     <?php
@@ -102,11 +103,15 @@
            </table>
            <br>
            <form class="create_driver" action="Nuevo_chofer.php" method="POST">
-             <button type="submit" class="btn btn-primary">Agregar nuevo chofer</button>
+             <button type="submit" class="btn btn-outline-primary">Agregar nuevo chofer</button>
              <br>
            </form>
          </div>
          <div class="col-md-1">
+           <br>
+           <form class="quit" action="Login.html" method="POST">
+             <button type="submit" class="btn btn-outline-secondary">Salir</button>
+           </form>
          </div>
        </div>
      </div>
