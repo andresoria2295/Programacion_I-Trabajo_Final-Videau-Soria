@@ -40,6 +40,7 @@ class Usuario{
         $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
         $stmt->bindParam(':password', $password_hash);
         // execute the query, also check if query was successful
+        
         if($stmt->execute()){
             return true;
         }
@@ -69,11 +70,23 @@ class Usuario{
         $stmt->bindParam(':username', $this->username);
 
         // Execute
+        try{
+            $this->connection->beginTransaction();
+            $stmt->execute();
+            if($this->connection->commit()){
+                return true;
+            }
+        }catch(Exception $e){
+            $this->connection->rollBack();
+            return false;
+        }
+
+        /*
         if($stmt->execute()){
             return true;
         }else{
             return false;
-        };
+        };*/
     }
 
     public function getHash(){

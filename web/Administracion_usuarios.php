@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Administracion de usuarios
+      Registro de usuarios
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
   </head>
@@ -82,13 +82,13 @@
                    echo "</td>";
                  }
                  echo "<td>";
-                 echo "<a href='Eliminacion_usuarios.php?id=".$fila['user_id']."'>Eliminar</a>";
+                 echo "<a href='Eliminacion_usuarios.php?user_id=".$fila['user_id']."'>Eliminar</a>";
                  //echo "<form class=\"delete_driver\" action=\"Eliminacion_usuarios.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"chofer_id\" class=\"btn btn-danger\">Eliminar</button>";
                  //echo "</form>";
                  echo "</td>";
                  echo "<td>";
-                 echo "<a href='Carga_usuario.php?id=".$fila['user_id']."'>Editar</a>";
+                 echo "<a href='Carga_usuario.php?user_id=".$fila['user_id']."'>Editar</a>";
                  //echo "<form class=\"update_driver\" action=\"Carga_usuario.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"editado\" class=\"btn btn-success\">Editar</button>";
                  //echo "</form>";

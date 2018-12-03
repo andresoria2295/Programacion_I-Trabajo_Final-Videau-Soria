@@ -6,13 +6,17 @@
     exit;
   }
 
-  $name = $_POST['name'];
-  $surname = $_POST['surname'];
-  $dni = $_POST['dni'];
-  $email = $_POST['email'];
-  $system_id = $_POST['system_id'];
-  $vehicle_id = $_POST['vehicle_id'];
+  $user = $_POST['usuario'];
+  $pass = $_POST['clave'];
+  $rol = $_POST['rol'];
 
+/*
+  if(isset($_POST["role"])){
+    $rol = "1";
+  }else {
+    $rol = "0";
+  }
+*/
   $servidor = 'localhost';
   $usuario = 'root';
   $clave = '31081995AndSor';
@@ -20,13 +24,13 @@
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-  $sql = 'select * from chofer';
+  $sql = 'select * from usuario';
   $ejec_sql = $conexion->prepare($sql);
   $ejec_sql -> execute();
 
-  $registro = array('nombre' => $name, 'apellido' => $surname, 'documento'=> $dni, 'email'=> $email, 'vehiculo_id'=> $vehicle_id, 'sistema_id'=> $system_id);
+  $registro = array('username' => $user, 'password' => $pass, 'rol' => $rol);
 
-  $sql = "INSERT INTO chofer (nombre, apellido, documento, email, vehiculo_id, sistema_id) VALUES (:nombre, :apellido, :documento, :email, :vehiculo_id, :sistema_id)";
+  $sql = "INSERT INTO usuario (username, password, rol) VALUES (:username, :password, :rol)";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute($registro);
 

@@ -27,17 +27,17 @@
                  echo "Administrador acreditado: {$_SESSION['usuario']}";
               ?>
              <br><br><br>
-             <h3>Panel de Administración</h3>
+             <h3>Plataforma de Administración</h3>
              <br>
-             <button type="submit" class="btn btn-secondary btn-lg btn-block">Administración de Usuarios</button>
+             <button type="submit" class="btn btn-primary btn-lg btn-block">Administración de Usuarios</button>
              <br>
            </form>
            <form class="audit_register" action="Registro_auditoria.php" method="POST">
-             <button type="submit" class="btn btn-secondary btn-lg btn-block">Registros de Auditoría</button>
+             <button type="submit" class="btn btn-primary btn-lg btn-block">Registros de Auditoría</button>
              <br>
            </form>
            <form class="audit_export" action="Exportacion_auditoria.php" method="POST">
-             <button type="submit" class="btn btn-secondary btn-lg btn-block">Exportación de Auditoría</button>
+             <button type="submit" class="btn btn-primary btn-lg btn-block">Exportación de Auditoría</button>
            </form>
           </div>
           <div class="col-md-3">

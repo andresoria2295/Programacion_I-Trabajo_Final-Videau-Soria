@@ -22,7 +22,7 @@
             echo "Usuario acreditado: {$_SESSION['usuario']}";
            ?>
           <br><br><br>
-          <h2>Edición de registro</h2>
+          <h2>Edición de registro chofer</h2>
           <h5>Recompletar los siguientes campos</h5>
           <br><br>
           <form class="register" action="Edicion_choferes.php" method="POST">

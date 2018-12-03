@@ -18,7 +18,7 @@
 
   $sql = "DELETE FROM usuario WHERE user_id = :user_id";
   $ejec_sql = $conexion -> prepare($sql);
-  $ejec_sql -> execute($id);
-  echo "$id";
-  //header('location: Administracion_usuarios.php');
+  $ejec_sql -> execute($registro);
+  //echo "$id";
+  header('location: Administracion_usuarios.php');
  ?>

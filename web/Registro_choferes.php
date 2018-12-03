@@ -37,7 +37,8 @@
 
                $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-               $sql = 'select * from chofer';
+               //$sql = 'select a.chofer_id, a.apellido, a.nombre as nombre_persona, a.documento, a.email, a.vehiculo_id, b.nombre as nombre_sistema, a.created, b.updated from chofer a left join sistema_transporte b on a.sistema_id = b.sistema_id';
+               $sql = 'select chofer.chofer_id, chofer.apellido, chofer.nombre as nombre_chofer, chofer.documento, chofer.email, vehiculo.patente, sistema_transporte.nombre as nombre_sistema_transporte, chofer.created, chofer.updated FROM transporte.chofer LEFT JOIN vehiculo ON chofer.vehiculo_id = vehiculo.vehiculo_id LEFT JOIN sistema_transporte ON chofer.sistema_id = sistema_transporte.sistema_id ORDER BY apellido ASC';
                $ejec_sql = $conexion -> prepare($sql);
                $ejec_sql -> execute();
 
@@ -46,10 +47,10 @@
                 echo "ID chofer";
                 echo "</td>";
                 echo "<td>";
-                echo "Nombre";
+                echo "Apellido";
                 echo "</td>";
                 echo "<td>";
-                echo "Apellido";
+                echo "Nombre";
                 echo "</td>";
                 echo "<td>";
                 echo "Documento";

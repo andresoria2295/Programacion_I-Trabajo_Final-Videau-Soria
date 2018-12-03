@@ -25,7 +25,7 @@
             echo "Usuario acreditado: {$_SESSION['usuario']}";
             ?>
           <br><br><br>
-          <h2>Creación de registro</h2>
+          <h2>Creación de registro chofer</h2>
           <h5>Completar los siguientes campos</h5>
           <br><br>
           <form class="register" action="Creacion_choferes.php" method="POST">

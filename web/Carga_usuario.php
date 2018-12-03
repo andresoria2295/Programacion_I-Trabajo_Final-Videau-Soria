@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Registro de usuario</title>
+    <title>Edición de registro</title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
@@ -22,13 +22,13 @@
             echo "Administrador acreditado: {$_SESSION['usuario']}";
            ?>
           <br><br><br>
-          <h2>Edición de registro usuario</h2>
+          <h2>Edición de registro</h2>
           <h5>Completar los siguientes campos</h5>
           <br><br>
           <form class="register" action="Edicion_usuarios.php" method="POST">
 
           <?php
-           $id = $_GET['id'];
+           $id = $_GET['user_id'];
 
            $servidor ='localhost';
            $usuario = 'root';
@@ -48,14 +48,35 @@
                if($fila['user_id'] == $id){
                  echo "<div class=\"form-group\">";
                    echo "<label for=\"usuario\">Nombre de usuario: </label>";
-                   echo "<input type=\"text\" class=\"form-control\" name=\"usuario\" id=\"user\" aria-describedby=\"emailHelp\">";
+                   echo "<input type=\"text\" class=\"form-control\" name=\"usuario\" id=\"user\" aria-describedby=\"emailHelp\" value=\"$fila[username]\">";
                    echo "<small id=\"emailHelp\" class=\"form-text text-muted\"></small>";
                  echo "</div>";
                  echo "<div class=\"form-group\">";
                    echo "<label for=\"clave\">Contraseña: </label>";
-                   echo "<input type=\"password\" class=\"form-control\" name=\"clave\" id=\"pass\">";
+                   echo "<input type=\"password\" class=\"form-control\" name=\"clave\" id=\"pass\" value=\"$fila[password]\">";
                    echo "<small id=\"passwordHelp\" class=\"form-text text-muted\">Requerimiento mínimo de 8 caracteres.</small>";
                  echo "</div>";
+                 echo "<br>";
+                 echo "<input type=\"hidden\" class=\"form-control\" name=\"usuario_id\" id=\"usuario_id\" aria-describedby=\"emailHelp\" value=\"$fila[user_id]\">"; //envio de user_id
+                 if($fila["rol"] == "1"){
+                   echo "<div class=\"form-row\">";
+                     echo "<input class=\"form-check-input\" type=\"radio\" id=\"inlineFormCheck\" name=\"rol\" value=\"1\" checked>";
+                     echo "<label class=\"form-check-label\" for=\"inlineFormCheck\">Administrador</label>";
+                   echo "</div>";
+                   echo "<div class=\"form-row\">";
+                     echo "<input class=\"form-check-input\" type=\"radio\" id=\"inlineFormCheck\" name=\"rol\" value=\"0\">";
+                     echo "<label class=\"form-check-label\" for=\"inlineFormCheck\">Usuario</label>";
+                   echo "</div>";
+                 }else{
+                   echo "<div class=\"form-row\">";
+                     echo "<input class=\"form-check-input\" type=\"radio\" id=\"inlineFormCheck\" name=\"rol\" value=\"1\">";
+                     echo "<label class=\"form-check-label\" for=\"inlineFormCheck\">Administrador</label>";
+                   echo "</div>";
+                   echo "<div class=\"form-row\">";
+                     echo "<input class=\"form-check-input\" type=\"radio\" id=\"inlineFormCheck\" name=\"rol\" value=\"0\" checked>";
+                     echo "<label class=\"form-check-label\" for=\"inlineFormCheck\">Usuario</label>";
+                   echo "</div>";
+                 }
                  echo "<br>";
                  break;
                }
