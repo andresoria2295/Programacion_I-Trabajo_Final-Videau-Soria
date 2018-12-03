@@ -166,10 +166,10 @@ Class Chofer{
         // Execution
         if($this->checkSystemExistence() && $this->checkVehicleExistence()){            
             if($stmt->execute()){
-                echo json_encode(Array("Message"=>"Se ejecuto el create"));
+                //echo json_encode(Array("Message"=>"Se ejecuto el create"));
                 return true;
             }else{
-                echo json_encode(Array("Message"=>"NO se ejecuto el create"));
+                //echo json_encode(Array("Message"=>"NO se ejecuto el create"));
                 return false;
             };
         };
