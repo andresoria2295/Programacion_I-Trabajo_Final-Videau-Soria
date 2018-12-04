@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../../config/Database.php';
 include_once '../../objects/Transporte.php';
 include_once '../../objects/Token.php';
+include_once '../../objects/Auditoria.php';
 
 
 // Instantiate database object
@@ -22,6 +23,10 @@ $transport = new Transporte($db);
 // Token
 $Token = new Token();
 
+// Auditoria
+$Auditoria = new Auditoria($db);
+
+
 
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
@@ -29,8 +34,11 @@ switch($_SERVER["REQUEST_METHOD"]){
         $data = json_decode(file_get_contents("php://input"));
         // Check if JWT passed is valid.
         $Token->validateToken($data->jwt);
+        // Auditoria
+        $start_time = microtime(true);
+
         // Make sure data is not empty
-        if( !empty($data->nombre) && !empty($data->pais_procedencia)){
+        if(!empty($data->nombre) && !empty($data->pais_procedencia)){
         // Set property values
         $transport->nombre = $data->nombre;
         $transport->pais = $data->pais_procedencia;
@@ -46,12 +54,20 @@ switch($_SERVER["REQUEST_METHOD"]){
             echo json_encode(array("message" => "No se pudo crear el servicio. Faltan datos."));
         }
         
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
     
     case "GET":
 
         // Check if JWT passed is valid.
         $Token->validateToken($_GET["jwt"]);
+
+        // Auditoria
+        $start_time = microtime(true);
 
         if(isset($_GET["id"])){
             $transport->id = $_GET["id"];
@@ -109,6 +125,11 @@ switch($_SERVER["REQUEST_METHOD"]){
             }
         }
         
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($_GET["jwt"])["username"], $ep, $time);
+
         break;
     
     case "PUT":
@@ -116,6 +137,10 @@ switch($_SERVER["REQUEST_METHOD"]){
         $data = json_decode(file_get_contents("php://input"));
         // Check if JWT passed is valid.
         $Token->validateToken($data->jwt);
+
+        // Auditoria
+        $start_time = microtime(true);
+
         // Set property values
         $transport->id = $data->id;
         $transport->nombre = $data->nombre;
@@ -128,6 +153,11 @@ switch($_SERVER["REQUEST_METHOD"]){
             echo json_encode(array("message" => "No se pudo modificar el sistema de transporte."));
         }
 
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
 
     case "DELETE":
@@ -135,6 +165,10 @@ switch($_SERVER["REQUEST_METHOD"]){
         $data = json_decode(file_get_contents("php://input"));
         // Check if JWT passed is valid.
         $Token->validateToken($data->jwt);
+
+        // Auditoria
+        $start_time = microtime(true);
+
         // delete the product
         if($data->id != null){
             // set product id to be deleted
@@ -148,6 +182,11 @@ switch($_SERVER["REQUEST_METHOD"]){
         } else {
             echo json_encode(array("message" => "Faltan datos"));
         }
+
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
 
         break;
 }

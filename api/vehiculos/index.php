@@ -12,6 +12,7 @@ date_default_timezone_set("America/Argentina/Mendoza");
 include_once '../../config/Database.php';
 include_once '../../objects/Vehiculo.php';
 include_once '../../objects/Token.php';
+include_once '../../objects/Auditoria.php';
 
 // Instantiate database object
 $database = new Database();
@@ -23,6 +24,9 @@ $vehicle = new Vehiculo($db);
 // Token
 $Token = new Token($db);
 
+// Auditoria
+$Auditoria = new Auditoria($db);
+
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
         // Get POSTed data
@@ -30,6 +34,9 @@ switch($_SERVER["REQUEST_METHOD"]){
 
         // Validate token
         $Token->validateToken($data->jwt);
+
+        // Auditoria
+        $start_time = microtime(true);
 
         // Make sure data is not empty
         if(!empty($data->marca) && !empty($data->modelo) && !empty($data->patente) && !empty($data->sistema) && !empty($data->anho_fabricacion) && !empty($data->anho_patente)){
@@ -51,11 +58,19 @@ switch($_SERVER["REQUEST_METHOD"]){
             echo json_encode(Array("message" => "Datos insuficientes"));
         }
         
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
 
     case "GET": // NO FUNCIONA READ SINGLE
         $Token->validateToken($_GET["jwt"]);
         
+        // Auditoria
+        $start_time = microtime(true);
+
         if(isset($_GET["patente"])){
             $vehicle->patente = $_GET["patente"];
             $vehicle->read();
@@ -63,6 +78,11 @@ switch($_SERVER["REQUEST_METHOD"]){
             $vehicle->readAll();
         }
 
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($_GET["jwt"])["username"], $ep, $time);
+        
         break;
 
     case "PUT":
@@ -71,6 +91,9 @@ switch($_SERVER["REQUEST_METHOD"]){
 
         // Validate token
         $Token->validateToken($data->jwt);
+
+        // Auditoria
+        $start_time = microtime(true);
 
         //print_r($data);
         $vehicle->marca = $data->marca;
@@ -92,6 +115,11 @@ switch($_SERVER["REQUEST_METHOD"]){
             echo json_encode(Array("Message"=>"No se pudo modificar el vehiculo. Faltan datos"));
         }
         
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
 
     case "DELETE":
@@ -100,6 +128,9 @@ switch($_SERVER["REQUEST_METHOD"]){
 
         // Validate token
         $Token->validateToken($data->jwt);
+
+        // Auditoria
+        $start_time = microtime(true);
 
         if(!empty($data->patente)){
             $vehicle->patente = $data->patente;
@@ -111,6 +142,11 @@ switch($_SERVER["REQUEST_METHOD"]){
         }else{
             echo json_encode(Array("message"=>"No se cumple que !empty(data->patente)"));
         }
+        
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
         
         break;
 

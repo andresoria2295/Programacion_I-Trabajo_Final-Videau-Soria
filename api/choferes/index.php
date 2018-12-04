@@ -11,6 +11,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../../config/Database.php';
 include_once '../../objects/Chofer.php';
 include_once '../../objects/Token.php';
+include_once '../../objects/Auditoria.php';
 
 // Instantiate database object
 $database = new Database();
@@ -22,12 +23,17 @@ $driver = new Chofer($db);
 // Token
 $Token = new Token($db);
 
+// Auditoria
+$Auditoria = new Auditoria($db);
+
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
         // Get data
         $data = json_decode(file_get_contents("php://input"));
         // Check token
         $Token->validateToken($data->jwt);
+        // Auditoria
+        $start_time = microtime(true);
 
         if(isset($data->nombre) && isset($data->apellido) && isset($data->documento) && isset($data->sistema) && isset($data->vehiculo) && isset($data->email)){
             $driver->name = $data->nombre;
@@ -47,9 +53,16 @@ switch($_SERVER["REQUEST_METHOD"]){
             echo json_encode(Array("Message" => "Faltan datos"));
         }
 
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
 
     case "GET":
+        // Auditoria
+        $start_time = microtime(true);
         
         if(isset($_GET["jwt"])){
             $Token->validateToken($_GET["jwt"]);
@@ -64,6 +77,11 @@ switch($_SERVER["REQUEST_METHOD"]){
             $driver->readAll();
         };
 
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($_GET["jwt"])["username"], $ep, $time);
+
         break;
         
     case "PUT":
@@ -72,6 +90,9 @@ switch($_SERVER["REQUEST_METHOD"]){
         // Validate token
         $Token->validateToken($data->jwt);
 
+        // Auditoria
+        $start_time = microtime(true);
+
         // Set new property values
         if(isset($data->id)){
             $driver->driver_id = $data->id;
@@ -79,8 +100,8 @@ switch($_SERVER["REQUEST_METHOD"]){
             $driver->surname = $data->apellido;
             $driver->dni = $data->documento;
             $driver->email = $data->email;
-            $driver->vehicle_id = $data->vehiculo_id;
-            $driver->system_id = $data->sistema_id;
+            $driver->vehicle_id = $data->vehiculo;
+            $driver->system_id = $data->sistema;
 
             // Update
             if($driver->update()){
@@ -90,13 +111,22 @@ switch($_SERVER["REQUEST_METHOD"]){
             }
         }
 
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
+
     case "DELETE":
         // Get data
         $data = json_decode(file_get_contents("php://input"));
 
         // Validate token
         $Token->validateToken($data->jwt);
+
+        // Auditoria
+        $start_time = microtime(true);
 
         // Set id field to be deleted
         $driver->driver_id = $data->id;
@@ -112,6 +142,11 @@ switch($_SERVER["REQUEST_METHOD"]){
             echo json_encode(array("message" => "No es posible eliminar chofer seleccionado. Faltan datos"));
         }
         
+        // Auditoria
+        $time = microtime(true) - $start_time;
+        $ep = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"] . $_SERVER["REQUEST_METHOD"];
+        $Auditoria->audit($Token->decodeToken($data->jwt)["username"], $ep, $time);
+
         break;
 }
 ?>
