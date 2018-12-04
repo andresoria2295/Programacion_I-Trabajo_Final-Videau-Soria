@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // Include database and object files
 include_once '../../config/Database.php';
 include_once '../../objects/Chofer.php';
+include_once '../../objects/Token.php';
 
 // Instantiate database object
 $database = new Database();
@@ -18,10 +19,15 @@ $db = $database->getConnection();
 // Initialize object
 $driver = new Chofer($db);
 
+// Token
+$Token = new Token($db);
+
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
         // Get data
         $data = json_decode(file_get_contents("php://input"));
+        // Check token
+        $Token->validateToken($data->jwt);
 
         if(isset($data->nombre) && isset($data->apellido) && isset($data->documento) && isset($data->sistema) && isset($data->vehiculo) && isset($data->email)){
             $driver->name = $data->nombre;
@@ -43,50 +49,31 @@ switch($_SERVER["REQUEST_METHOD"]){
 
         break;
 
-    case "GET": // NO FUNCIONA
-    
+    case "GET":
+        
+        if(isset($_GET["jwt"])){
+            $Token->validateToken($_GET["jwt"]);
+        }else{
+            exit;
+        }
+
         if(isset($_GET["id"])){
             $driver->driver_id = $_GET["id"];
+            $driver->read();
         }else{
             $driver->readAll();
-        }
-    
-        $driver->read();
-    
-        if($driver->driver_id!=null){
-            // Create array
-            $driver_array = array(
-                "chofer_id"=>$driver->driver_id,
-                "nombre"=>$driver->name,
-                "apellido"=>$driver->surname,
-                "documento"=>$driver->dni,
-                "email"=>$driver->email,
-                "vehiculo_id"=>$driver->vehicle_id,
-                "sistema_id"=>$driver->system_id,
-                "created"=>$driver->created,
-                "updated"=>$driver->updated
-            );
-    
-            // Send array in JSON format
-            print_r($driver_array);
-            echo json_encode($driver_array);
-        }else{
-            // Data does not exist.
-            echo json_encode(array("message" => "Chofer no existente."));
-        }
-        
+        };
+
         break;
         
     case "PUT":
-        // Get POSTed data
+        // Get data
         $data = json_decode(file_get_contents("php://input"));
-        // Set defaults
-
-        //$driver->getData($data->id);
+        // Validate token
+        $Token->validateToken($data->jwt);
 
         // Set new property values
         if(isset($data->id)){
-            //echo json_encode(array("mensaje"=>"data id isset"));
             $driver->driver_id = $data->id;
             $driver->name = $data->nombre;
             $driver->surname = $data->apellido;
@@ -95,7 +82,7 @@ switch($_SERVER["REQUEST_METHOD"]){
             $driver->vehicle_id = $data->vehiculo_id;
             $driver->system_id = $data->sistema_id;
 
-            // update the product
+            // Update
             if($driver->update()){
                 echo json_encode(array("message" => "Se ha acualizado chofer seleccionado."));
             }else{
@@ -107,10 +94,14 @@ switch($_SERVER["REQUEST_METHOD"]){
     case "DELETE":
         // Get data
         $data = json_decode(file_get_contents("php://input"));
-        // set product id to be deleted
+
+        // Validate token
+        $Token->validateToken($data->jwt);
+
+        // Set id field to be deleted
         $driver->driver_id = $data->id;
 
-        // delete the product
+        // Delete
         if($data->id != null){
             if($driver->delete()){
                 echo json_encode(array("message" => "Se ha eliminado chofer seleccionado."));

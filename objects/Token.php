@@ -10,7 +10,7 @@ class Token{
 
     public function generateToken($data){
         $issuedAt = time();
-        $expirationTime = $issuedAt + 30;
+        $expirationTime = $issuedAt + 99999999999999; /* Puedo cambiar el tiempo de expiracion cambiando el numero (segundos) */
 
         $payload = array(
             "iat" => $issuedAt, // Los campos DEBEN ser llamados "iat" y "exp".

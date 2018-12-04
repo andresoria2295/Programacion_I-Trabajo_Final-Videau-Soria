@@ -1,5 +1,4 @@
 <?php
-include_once "..\users\validate_token.php";
 
 // Required headers
 header("Access-Control-Allow-Origin: *");
@@ -12,6 +11,7 @@ date_default_timezone_set("America/Argentina/Mendoza");
 // Include database and object files
 include_once '../../config/Database.php';
 include_once '../../objects/Vehiculo.php';
+include_once '../../objects/Token.php';
 
 // Instantiate database object
 $database = new Database();
@@ -20,13 +20,19 @@ $db = $database->getConnection();
 // Initialize object
 $vehicle = new Vehiculo($db);
 
+// Token
+$Token = new Token($db);
+
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
         // Get POSTed data
         $data = json_decode(file_get_contents("php://input"));
 
+        // Validate token
+        $Token->validateToken($data->jwt);
+
         // Make sure data is not empty
-        if(!empty($data->marca) && !empty($data->modelo) && !empty($data->patente) && !empty($data->sistema)){
+        if(!empty($data->marca) && !empty($data->modelo) && !empty($data->patente) && !empty($data->sistema) && !empty($data->anho_fabricacion) && !empty($data->anho_patente)){
             // Setting object properties
             $vehicle->marca = $data->marca;
             $vehicle->modelo = $data->modelo;
@@ -34,6 +40,8 @@ switch($_SERVER["REQUEST_METHOD"]){
             //$vehicle->sistema_nombre = $data->sistema; Si quisiera poner el nombre en vez del id del sistema
             $vehicle->sistema_id = $data->sistema;
             $vehicle->created = date('Y-m-d H:i:s');
+            $vehicle->anho_fabricacion = $data->anho_fabricacion;
+            $vehicle->anho_patente = $data->anho_patente;
             if($vehicle->create()){
                 echo json_encode(Array("message" => "Vehículo creado correctamente"));
             }else{
@@ -46,49 +54,33 @@ switch($_SERVER["REQUEST_METHOD"]){
         break;
 
     case "GET": // NO FUNCIONA READ SINGLE
+        $Token->validateToken($_GET["jwt"]);
+        
         if(isset($_GET["patente"])){
             $vehicle->patente = $_GET["patente"];
             $vehicle->read();
-    
-            if($vehicle->marca!=null && $vehicle->modelo != null){
-            // Create array
-            $vehicleArray = array(
-                "marca"=>$vehicle->marca,
-                "modelo"=>$vehicle->modelo,
-                "patente"=>$vehicle->patente,
-                "created"=>$vehicle->created,
-                "updated"=>$vehicle->updated,
-                "sistema"=>$vehicle->sistema_nombre
-            );
-            
-            // Send array in JSON format
-            echo json_encode($vehicleArray);
         }else{
-            // Data does not exist.
-            echo json_encode(array("message" => "El servicio de transporte no existe."));
+            $vehicle->readAll();
         }
-        }else{
-            $data = $vehicle->readAll();
-            $records_array = array();
-            for($i=0; $i<count($data); $i++){
-                array_push($records_array, $data[$i]);
-            }
-            echo json_encode(Array("data"=>$records_array));
-        }
-    
-        
-        
+
         break;
 
     case "PUT":
         // Get POSTed data
         $data = json_decode(file_get_contents("php://input"));
 
-        print_r($data);
+        // Validate token
+        $Token->validateToken($data->jwt);
+
+        //print_r($data);
         $vehicle->marca = $data->marca;
         $vehicle->modelo = $data->modelo;
         $vehicle->patente = $data->patente;
         $vehicle->id = $data->id;
+        $vehicle->sistema_id = $data->sistema;
+        $vehicle->anho_fabricacion = $data->anho_fabricacion;
+        $vehicle->anho_patente = $data->anho_patente;
+        $vehicle->created = date('Y-m-d H:i:s');
 
         if($vehicle->id!=null){
             if($vehicle->update()){
@@ -105,6 +97,9 @@ switch($_SERVER["REQUEST_METHOD"]){
     case "DELETE":
         // Get POSTed data
         $data = json_decode(file_get_contents("php://input"));
+
+        // Validate token
+        $Token->validateToken($data->jwt);
 
         if(!empty($data->patente)){
             $vehicle->patente = $data->patente;

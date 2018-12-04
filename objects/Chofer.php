@@ -12,6 +12,7 @@ Class Chofer{
     public $email;
     public $vehicle_id;
     public $system_id;
+    public $system_name;
     public $created;
     public $updated;
 
@@ -117,21 +118,36 @@ Class Chofer{
     // CRUD operations
 
     public function readAll(){
-        $query = "SELECT * FROM ". $this->table_name ." ORDER BY apellido";
+        $query = "SELECT chofer.chofer_id, chofer.nombre, chofer.apellido, chofer.documento, chofer.email, sistema_transporte.nombre as sistema, chofer.vehiculo_id, chofer.created, chofer.updated FROM ". $this->table_name ." LEFT JOIN sistema_transporte ON chofer.sistema_id = sistema_transporte.sistema_id";
         $stmt = $this->connection->prepare($query);
         $stmt->execute();
-        return $stmt;
+        // Define array
+        $arr_data = [];
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            // Set values to object properties
+            $this->driver_id = $row['chofer_id'];
+            $this->name = $row['nombre'];
+            $this->surname = $row['apellido'];
+            $this->dni = $row['documento'];
+            $this->email = $row['email'];
+            $this->vehicle_id = $row['vehiculo_id'];
+            $this->system_name = $row['sistema'];
+            $arr = ["ID"=>$this->driver_id, "Nombre"=>$this->name, "Apellido"=>$this->surname, "Documento"=>$this->dni, "email"=>$this->email, "ID del vehiculo"=>$this->vehicle_id, "Sistema"=>$this->system_name];
+            array_push($arr_data, $arr);
+        }
+
+        echo json_encode(array("data"=>$arr_data));
     }
 
     public function read(){
-        $query = "SELECT chofer_id, nombre, apellido, documento, email, vehiculo_id, sistema_id, created, updated FROM ". $this->table_name ." WHERE apellido=:apellido";
+        $query = "SELECT chofer.chofer_id, chofer.nombre, chofer.apellido, chofer.documento, chofer.email, sistema_transporte.nombre as sistema, chofer.vehiculo_id, chofer.created, chofer.updated FROM ". $this->table_name ." LEFT JOIN sistema_transporte ON chofer.sistema_id = sistema_transporte.sistema_id WHERE chofer.chofer_id=:cid";
         $stmt = $this->connection->prepare($query);
-        $stmt->bindParam(":apellido", $this->surname);
+        $stmt->bindParam(":cid", $this->driver_id);
         $stmt->execute();
 
         // Get retrieved row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        
         // Set values to object properties
         $this->driver_id = $row['chofer_id'];
         $this->name = $row['nombre'];
@@ -139,9 +155,10 @@ Class Chofer{
         $this->dni = $row['documento'];
         $this->email = $row['email'];
         $this->vehicle_id = $row['vehiculo_id'];
-        $this->system_id = $row['sistema_id'];
-        $this->created = $row['created'];
-        $this->updated = $row['updated'];
+        $this->system_name = $row['sistema'];
+
+        $arr = ["ID"=>$this->driver_id, "Nombre"=>$this->name, "Apellido"=>$this->surname, "Documento"=>$this->dni, "email"=>$this->email, "ID del vehiculo"=>$this->vehicle_id, "Sistema"=>$this->system_name];
+        echo json_encode($arr);
     }
 
     public function create(){

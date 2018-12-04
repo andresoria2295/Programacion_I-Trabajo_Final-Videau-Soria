@@ -1,0 +1,60 @@
+// CREATE - POST
+
+http://localhost/proyecto/api/choferes/
+
+data:
+
+{
+	"nombre":"Andres",
+	"apellido":"Soria",
+	"documento":"82897562",
+	"email": "asoria@algo.com",
+	"sistema":"22",
+	"vehiculo":"11",
+	"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDM4NTMyOTIsImV4cCI6MTAwMDAxNTQzODUzMjkxLCJkYXRhIjp7InVzZXJfaWQiOm51bGwsInVzZXJuYW1lIjoiZGF2aWQifX0.mRBVqbyVfh8-D58HK6NRo0pyqGklMWp-V-k_Y1bqrqk"
+}
+
+// DELETE - DELETE
+
+http://localhost/proyecto/api/choferes/
+
+data:
+
+{
+    "id": "id del chofer que se quiere eliminar",
+    "jwt": "jwt generado en el login"
+}
+
+// UPDATE - PUT
+
+http://localhost/proyecto/api/choferes/
+
+data:
+
+{
+	"id":"id valido del chofer que se quiere modificar",
+	"jwt":"jwt generado en el login",
+	"nombre":"Andres",
+	"apellido":"Soria",
+	"documento":"39874523",
+	"email":"andresoria@algo.com",
+	"sistema_id":"id de sistema de transporte valido",
+	"vehiculo_id":"id de vehiculo valido"
+}
+
+// READ ALL - GET
+
+http://localhost/proyecto/api/choferes/
+
+data:
+
+jwt
+
+// READ - GET
+
+http://localhost/proyecto/api/choferes/
+
+data:
+
+id: id del chofer
+jwt
