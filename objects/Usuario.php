@@ -110,4 +110,31 @@ class Usuario{
         }
     }
 
+    public function exists(){
+        $query = "SELECT * FROM ". $this->table_name ." WHERE username=:username";
+        $stmt = $this->connection->prepare($query);
+        $this->username = htmlspecialchars(strip_tags($this->username));
+        $stmt->bindParam(":username", $this->username);
+        $stmt->execute();
+        if($stmt->rowCount() > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function isAdmin(){
+        $query = "SELECT * FROM ". $this->table_name ." WHERE username=:username";
+        $stmt = $this->connection->prepare($query);
+        $this->username = htmlspecialchars(strip_tags($this->username));
+        $stmt->bindParam(":username", $this->username);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($stmt->rowCount() > 0 && $row["rol"] == "1"){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

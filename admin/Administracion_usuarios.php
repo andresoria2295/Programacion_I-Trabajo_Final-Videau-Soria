@@ -6,7 +6,6 @@
       Registro de usuarios
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/registers_style.css" />
   </head>
   <body>
     <?php
@@ -100,17 +99,11 @@
            </table>
            <br>
            <form class="create_driver" action="Nuevo_usuario.php" method="POST">
-             <button type="submit" class="btn btn-outline-primary">Agregar nuevo usuario</button>
+             <button type="submit" class="btn btn-primary">Agregar nuevo usuario</button>
              <br>
            </form>
          </div>
-         <div class="col-md-1">
-         </div>
-         <div class="col-md-1">
-           <br>
-           <form class="quit" action="Login.html" method="POST">
-             <button type="submit" class="btn btn-outline-secondary">Salir</button>
-           </form>
+         <div class="col-md-2">
          </div>
        </div>
      </div>

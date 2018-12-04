@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>Edición de registro</title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
   </head>
   <body>
     <div class="container-fluid">
@@ -24,7 +23,7 @@
            ?>
           <br><br><br>
           <h2>Edición de registro</h2>
-          <h5>Recompletar los siguientes campos</h5>
+          <h5>Completar los siguientes campos</h5>
           <br><br>
           <form class="register" action="Edicion_usuarios.php" method="POST">
 
@@ -101,19 +100,11 @@
            echo "<br><br>";
            */
           ?>
-          <button type="submit" class="btn btn-outline-primary">Aceptar</button>
+          <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Aceptar</button>
         </form>
         <br><br>
       </div>
-      <div class="col-md-1">
-      </div>
-      <div class="col-md-1">
-      </div>
-      <div class="col-md-1">
-        <br>
-        <form class="quit" action="Login.html" method="POST">
-          <button type="submit" class="btn btn-outline-secondary">Salir</button>
-        </form>
+      <div class="col-md-3">
       </div>
      </div>
    </div>

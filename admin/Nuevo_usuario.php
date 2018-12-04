@@ -3,10 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Creación de registro
+      Creación de registro 
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
   </head>
   <body>
     <div class="container-fluid">
@@ -50,22 +49,13 @@
               <label class="form-check-label" for="inlineFormCheck">Usuario</label>
             </div>
               <br>
-              <button type="submit" class="btn btn-outline-primary">Aceptar</button>
+              <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Aceptar</button>
               <br><br>
           </form>
           <br><br><br>
         </div>
-        <div class="col-md-1">
         </div>
-        <div class="col-md-1">
+        <div class="col-md-3">
         </div>
-        <div class="col-md-1">
-          <br>
-          <form class="quit" action="Login.html" method="POST">
-            <button type="submit" class="btn btn-outline-secondary">Salir</button>
-          </form>
-        </div>
-      </div>
-    </div>
   </body>
 </html>

@@ -6,7 +6,6 @@
       Panel de Administración
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="css/adm_style.css" />
   </head>
   <body>
     <br>
@@ -27,7 +26,7 @@
              <?php
                  echo "Administrador acreditado: {$_SESSION['usuario']}";
               ?>
-             <br><br><br><br><br>
+             <br><br><br>
              <h3>Plataforma de Administración</h3>
              <br>
              <button type="submit" class="btn btn-primary btn-lg btn-block">Administración de Usuarios</button>
@@ -41,14 +40,7 @@
              <button type="submit" class="btn btn-primary btn-lg btn-block">Exportación de Auditoría</button>
            </form>
           </div>
-          <div class="col-md-1">
-          </div>
-          <div class="col-md-1">
-          </div>
-          <div class="col-md-1">
-            <form class="quit" action="Login.html" method="POST">
-              <button type="submit" class="btn btn-secondary">Salir</button>
-            </form>
+          <div class="col-md-3">
           </div>
         </div>
      </div>
