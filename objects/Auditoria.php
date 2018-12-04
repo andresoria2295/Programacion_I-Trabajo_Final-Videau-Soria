@@ -50,6 +50,35 @@ class Auditoria{
         }
     }
 
+    public function exportAudit($fecha1, $fecha2){
+        // Query and stmt
+        $query = "SELECT auditoria_id, fecha_acceso, user, response_time, created from auditoria where fecha_acceso between :f1 and :f2";
+        $stmt = $this->connection->prepare($query);
+
+        // Sanitize
+        $fecha1= htmlspecialchars(strip_tags($fecha1));
+        $fecha2 = htmlspecialchars(strip_tags($fecha2));
+
+        // Bind
+        $stmt->bindParam(":f1", $fecha1);
+        $stmt->bindParam(":f2", $fecha2);
+
+        // Execute
+        $stmt->execute();
+
+        // Open file
+        $file = fopen("/proyecto/audits/Auditorias.txt", "w");
+        
+        // Fetch
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $str = $row["auditoria_id"] . " " . $row["fecha_acceso"] . " " . $row["user"] . " " . $row["response_time"] . " " . $row["created"] . "," . PHP_EOL;
+            fwrite($file, $str);
+        }
+
+        // Close file
+        fclose($file);
+    }
+
 }
 
 ?>
