@@ -1,0 +1,45 @@
+CREATE - POST
+
+http://localhost/proyecto/api/vehiculos/
+
+data:
+
+{
+	"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDM4NTY3NzcsImV4cCI6MTAwMDAxNTQzODU2Nzc2LCJkYXRhIjp7InVzZXJfaWQiOm51bGwsInVzZXJuYW1lIjoiZGF2aWQifX0.R33GYYrXeY7iZ_kqd17mG7_2tmEBAqFmbQZgjZnEph4",
+	"marca":"Chevrolet",
+	"modelo":"Corsa",
+	"patente":"JWK-123",
+	"anho_fabricacion":"1999",
+	"anho_patente":"2005",
+	"sistema":["24","23"]
+}
+
+UPDATE - PUT
+
+http://localhost/proyecto/api/vehiculos/
+
+data:
+
+{
+	"jwt":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDM4NTY3NzcsImV4cCI6MTAwMDAxNTQzODU2Nzc2LCJkYXRhIjp7InVzZXJfaWQiOm51bGwsInVzZXJuYW1lIjoiZGF2aWQifX0.R33GYYrXeY7iZ_kqd17mG7_2tmEBAqFmbQZgjZnEph4",
+	"id":"16",
+	"marca":"Lotus",
+	"modelo":"Elise",
+	"patente":"NKL-123",
+	"anho_fabricacion":"2017",
+	"anho_patente":"2018",
+	"sistema":["22","23","24"]
+}
+
+DELETE - DELETE
+
+http://localhost/proyecto/api/vehiculos/
+
+{
+	"patente":"KSD-928",
+	"jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDM4NTY3NzcsImV4cCI6MTAwMDAxNTQzODU2Nzc2LCJkYXRhIjp7InVzZXJfaWQiOm51bGwsInVzZXJuYW1lIjoiZGF2aWQifX0.R33GYYrXeY7iZ_kqd17mG7_2tmEBAqFmbQZgjZnEph4"
+}
+
+READ - READ
+
+

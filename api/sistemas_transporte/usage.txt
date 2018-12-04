@@ -1,0 +1,52 @@
+// CREATE - POST
+
+http://localhost/proyecto/api/sistemas_transporte/
+
+data:
+
+{
+	"nombre":"Remis",
+	"pais_procedencia":"Argentina",
+	"jwt": "insert jwt generated at successful login"
+}
+
+// READ ALL - GET <- Los campos se ponen en params
+
+http://localhost/proyecto/api/sistemas_transporte/ 
+
+data:
+
+jwt
+
+// READ SINGLE - GET <- Los campos se ponen en params
+
+http://localhost/proyecto/api/sistemas_transporte/
+
+data:
+
+jwt
+nombre
+
+// UPDATE - PUT
+
+http://localhost/proyecto/api/sistemas_transporte/
+
+data:
+
+{
+	"nombre":"nuevo_nombre",
+	"pais_procedencia":"nuevo_pais",
+	"jwt": "insert jwt generated at successful login"
+}
+
+// DELETE - DELETE
+
+http://localhost/proyecto/api/sistemas_transporte/
+
+data:
+
+{
+	"id": "id del sistema que se quiere eliminar",
+	"jwt": "insert jwt generated at successful login"
+}
+

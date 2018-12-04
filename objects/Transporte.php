@@ -32,9 +32,9 @@ class Transporte{
     }
 
     public function read(){
-        $query = "SELECT sistema_id, nombre, pais_procedencia, created, updated FROM ". $this->table_name ." WHERE nombre=:sname";
+        $query = "SELECT sistema_id, nombre, pais_procedencia, created, updated FROM ". $this->table_name ." WHERE sistema_id=:sid";
         $stmt = $this->connection->prepare($query);
-        $stmt->bindParam(":sname", $this->nombre);
+        $stmt->bindParam(":sid", $this->id);
         $stmt->execute();
         
         // Get retrieved row
@@ -95,17 +95,23 @@ class Transporte{
     private function deleteCars(){
         $query = "DELETE FROM vehiculo WHERE vehiculo_id NOT IN (SELECT vehiculo_id FROM sistema_vehiculo)";
         $stmt = $this->connection->prepare($query);
-        try{
-            $this->connection->beginTransaction();
-            $stmt->execute();
-            if($this->connection->commit()){
-                return true;
-            };
-        }catch(Exception $e){
-            echo "Error: " . $e;
-            $this->connection->rollBack();
+        
+        if($stmt->execute()){
+            return true;
+        }else{
             return false;
         }
+    }
+
+    private function deleteDrivers(){
+        $query = "DELETE FROM chofer WHERE sistema_id NOT IN (SELECT sistema_id FROM sistema_vehiculo)";
+        $stmt = $this->connection->prepare($query);
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    
     }
 
     public function delete(){// Hay que hacer delete de todos los autos que tengan como sistema el que se está borrando
@@ -120,14 +126,16 @@ class Transporte{
         $stmt->bindParam(":id", $this->id);
         $stmt_intermediate->bindParam(":id", $this->id);
 
-        try{
+        try{ // Arreglar
             $this->connection->beginTransaction();
             $stmt_intermediate->execute();
+            $this->deleteDrivers();
+            $this->deleteCars();
             $stmt->execute();
             if($this->connection->commit()){
-                if($this->deleteCars()){
+                
                     return true;
-                }
+                
             }
         }catch(Exception $e){
             $this->connection->rollBack();

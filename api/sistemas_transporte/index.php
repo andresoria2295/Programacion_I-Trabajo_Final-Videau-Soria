@@ -53,8 +53,8 @@ switch($_SERVER["REQUEST_METHOD"]){
         // Check if JWT passed is valid.
         $Token->validateToken($_GET["jwt"]);
 
-        if(isset($_GET["nombre"])){
-            $transport->nombre = $_GET["nombre"];
+        if(isset($_GET["id"])){
+            $transport->id = $_GET["id"];
 
             $transport->read();
     
