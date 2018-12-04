@@ -169,7 +169,7 @@ Class Vehiculo{
         $this->patente=htmlspecialchars(strip_tags($this->patente));
         $this->anho_fabricacion=htmlspecialchars(strip_tags($this->anho_fabricacion));
         $this->anho_patente=htmlspecialchars(strip_tags($this->anho_patente));
-        $this->created = 
+        $this->created = htmlspecialchars(strip_tags($this->created));
     
         // Bind
         $stmt->bindParam(":marca", $this->marca);
