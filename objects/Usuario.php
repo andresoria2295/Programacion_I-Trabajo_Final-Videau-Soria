@@ -41,10 +41,18 @@ class Usuario{
         $stmt->bindParam(':password', $password_hash);
         // execute the query, also check if query was successful
         
+        try{
+            $stmt->execute();
+            return true;
+        }catch(Exception $e){
+            echo json_encode(array("Error" => $e));
+            return false;
+        }
+        /*
         if($stmt->execute()){
             return true;
         }
-        return false;
+        return false;*/
     }
     
     public function update(){
