@@ -9,7 +9,13 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-1">
+          <br>
+          <form class="" action="Administracion_usuarios.php" method="POST">
+            <button type="submit" class="btn btn-outline-info">Atrás</button>
+          </form>
+        </div>
+        <div class="col-md-2">
         </div>
         <div class="col-md-6">
           <br>
@@ -33,7 +39,7 @@
 
            $servidor ='localhost';
            $usuario = 'root';
-           $clave = '';
+           $clave = '31081995AndSor';
            $base = 'transporte';
 
            $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);

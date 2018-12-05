@@ -17,11 +17,17 @@
      ?>
      <div class="container-fluid">
        <div class="row">
-         <div class="col-md-4">
+         <div class="col-md-1">
+           <br>
+           <form class="" action="Administracion.php" method="POST">
+             <button type="submit" class="btn btn-outline-info">Atrás</button>
+           </form>
+         </div>
+         <div class="col-md-3">
          </div>
          <div class="col-md-4" class="central">
            <br>
-           <form class="" action="Auditoria_exportada.php" method="POST">
+           <form class="" action="Ejecucion_auditoria.php" method="POST">
              <?php
                  echo "Administrador acreditado: {$_SESSION['usuario']}";
               ?>

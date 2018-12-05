@@ -19,7 +19,13 @@
      ?>
      <div class="container-fluid">
        <div class="row">
-         <div class="col-md-2">
+         <div class="col-md-1">
+           <br>
+           <form class="" action="Administracion.php" method="POST">
+             <button type="submit" class="btn btn-outline-info">Atrás</button>
+           </form>
+         </div>
+         <div class="col-md-1">
          </div>
          <div class="col-md-8">
            <br>

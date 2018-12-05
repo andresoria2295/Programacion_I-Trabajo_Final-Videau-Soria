@@ -23,5 +23,5 @@
   $ejec_sql = $conexion-> prepare($sql);
   $ejec_sql -> execute($registro);
 
-  header('location: Registro_vehiculos.php');
+  header('location: Registro_sist_transporte.php');
  ?>
