@@ -20,7 +20,12 @@
      ?>
      <div class="container-fluid">
        <div class="row">
-         <div class="col-md-3">
+         <div class="col-md-1">
+           <form class="" action="Login.html" method="POST">
+             <button type="submit" class="btn btn-info">Atrás</button>
+           </form>
+         </div>
+         <div class="col-md-2">
          </div>
          <div class="col-md-6" class="central">
            <form class="adm_user" action="Registro_choferes.php" method="POST">
@@ -41,9 +46,7 @@
              <button type="submit" class="btn btn-primary btn-lg btn-block">Sistemas de Transporte</button>
            </form>
           </div>
-          <div class="col-md-1">
-          </div>
-          <div class="col-md-1">
+          <div class="col-md-2">
           </div>
           <div class="col-md-1">
             <form class="quit" action="Login.html" method="POST">

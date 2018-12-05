@@ -12,8 +12,14 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-1">
+          <br>
+          <form class="" action="Exportacion_auditoria.php" method="POST">
+            <button type="submit" class="btn btn-outline-info">Atrás</button>
+          </form>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-9">
           <br>
           <h2>Auditoria exportada</h2>
           <br>
