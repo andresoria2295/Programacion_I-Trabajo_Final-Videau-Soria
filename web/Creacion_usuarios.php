@@ -19,7 +19,7 @@
 */
   $servidor = 'localhost';
   $usuario = 'root';
-  $clave = '31081995AndSor';
+  $clave = '';
   $base = 'transporte';
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);

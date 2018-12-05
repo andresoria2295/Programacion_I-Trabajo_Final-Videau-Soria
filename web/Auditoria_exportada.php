@@ -16,22 +16,29 @@
         <div class="col-md-10">
           <br>
           <h2>Auditoria exportada</h2>
-          <br>
-          <?php
-          include_once "../config/Database.php";
-          include_once "../objects/Auditoria.php";
-          $dabs = new Database();
-          $conn = $dabs->getConnection();
-          $audit = new Auditoria($conn);
-          echo $audit->compdir;
-            echo "Se ha efectuado correctamente la exportación de auditoria.";
-           ?>
-           <br><br>
-           <a href="Administracion.php">Volver a panel de administración</a>
+          <br><br><br>
+          <a href="Administracion.php">Volver a panel de administración</a>
          </div>
          <div class="col-md-1">
          </div>
        </div>
      </div>
+     <?php
+            include_once "../config/Database.php";
+            include_once "../objects/Auditoria.php";
+
+            $database = new Database();
+            $db = $database->getConnection();
+
+            $audit = new Auditoria($db);
+
+            $fecha_1 = $_POST["date_1"];
+            $fecha_2 = $_POST["date_2"];
+
+            //echo "$fecha_1";
+            //echo "$fecha_2";
+
+            $audit->exportAudit($fecha_1, $fecha_2);
+           ?>
   </body>
 </html>
