@@ -10,13 +10,13 @@
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-  $sql = 'select * from usuario';
+  $sql = 'select * from users';
   $ejec_sql = $conexion->prepare($sql);
   $ejec_sql -> execute();
 
   $registro = array('username' => $user, 'password' => $pass);
 
-  $sql = "INSERT INTO usuario (username, password) VALUES (:username, :password)";
+  $sql = "INSERT INTO users (username, password) VALUES (:username, :password)";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute($registro);
 

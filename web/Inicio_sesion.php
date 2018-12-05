@@ -23,16 +23,16 @@
     $_SESSION['usuario'] = $usr->username;
 
     if($usr->exists() && password_verify($_POST["clave"], $usr->getHash())){
-      
+
       if($usr->isAdmin()){
         header('location: Administracion.php');
       }else{
-        header('location: Retorno_login.php');
+        header('location: Usuario.php');
       }
     }else{
       header('location: Retorno_login.php');
     }
-    
+
     ?>
   </body>
 </html>

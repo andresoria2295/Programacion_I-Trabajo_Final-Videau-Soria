@@ -20,32 +20,34 @@ $user = new Usuario($db);
 
 switch($_SERVER["REQUEST_METHOD"]){
     case "POST":
-        // Get data (POST)
-        $data = json_decode(file_get_contents("php://input"));
+    // Get data (POST)
+    $data = json_decode(file_get_contents("php://input"));
 
-        if(!empty($data->username) || !empty($data->password)){
-            // Set object properties
-            $user->username = $data->username;
-            $user->password = $data->password;
-            if(isset($data->rol) && $data->rol == "1"){
-                $user->role = $data->rol;
-            }else{
-                $user->role = "0";
-            }
-            $user->created = date('Y-m-d H:i:s');
-            
-            // Create the user
-            if($user->create()){
-                echo json_encode(array("message" => "User was created."));
-            } else {
-                echo json_encode(array("message" => "Unable to create user."));
-            }
-        } else {
-            echo json_encode(array("message" => "Unable to create user. Data is incomplete."));
-        }
+    if(!empty($data->username) && !empty($data->password)){
         
-        break;
-    
+        // Set object properties
+        $user->username = $data->username;
+        $user->password = $data->password;
+        if(isset($data->rol) && $data->rol == "1"){
+            $user->role = $data->rol;
+        }else{
+            $user->role = "0";
+        }
+        $user->created = date('Y-m-d H:i:s');
+        //echo json_encode(array("username"=>$user->username, "password"=>$user->password, "created"=>$user->created, "role"=>$user->role));
+        // Create the user
+        if($user->create()){
+            echo json_encode(array("username"=>$user->username, "password"=>$user->password, "created"=>$user->created, "role"=>$user->role));
+            echo json_encode(array("message" => "User was created."));
+        } else {
+            echo json_encode(array("message" => "Unable to create user."));
+        }
+    } else {
+        echo json_encode(array("message" => "Unable to create user. Data is incomplete."));
+    }
+
+    break;
+
     case "GET":
 
         break;

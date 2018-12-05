@@ -6,19 +6,19 @@
     exit;
   }
 
-  $id = $_GET['user_id'];
+  $id = $_GET['sistema_id'];
   $servidor = 'localhost';
   $usuario = 'root';
-  $clave = '';
+  $clave = '31081995AndSor';
   $base = 'transporte';
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-  $registro = array('user_id' => $id);
+  $registro = array('sistema_id' => $id);
 
-  $sql = "DELETE FROM users WHERE user_id = :user_id";
+  $sql = "DELETE FROM sistema_transporte WHERE sistema_id = :sistema_id";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute($registro);
   //echo "$id";
-  header('location: Administracion_usuarios.php');
+  header('location: Registro_sist_transporte.php');
  ?>

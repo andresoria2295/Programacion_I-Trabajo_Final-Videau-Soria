@@ -4,7 +4,7 @@ class Auditoria{
     // Database parameters
     private $connection;
     private $table_name = "auditoria";
-    private $audit_dir = "/proyecto/audit/";
+    public $audit_dir = "/audit";
 
     // Properties
     public $id;
@@ -67,15 +67,17 @@ class Auditoria{
         // Execute
         $stmt->execute();
 
-        if (!file_exists($this->audit_dir)) {
+        $algo = $_SERVER["DOCUMENT_ROOT"] . $this->audit_dir;
+
+        if (!file_exists($algo)) {
             //si lo que esta en $carpeta no existe se hace lo siguiente
-            if (mkdir($this->audit_dir, 0777, true));
+            if (mkdir($algo, 0777, true));
             //se crea lo que esta en $carpeta con los permisos 0777
         };
         
-        $algo = $_SERVER["DOCUMENT_ROOT"] . $this->audit_dir;
+        
         // Open file
-        $file = fopen($algo. "audit.txt", "w");
+        $file = fopen($algo. "/audit.txt", "w");
        
         // Fetch
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){

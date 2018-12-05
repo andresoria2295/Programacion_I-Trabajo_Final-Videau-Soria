@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Registro de usuarios
+      Registro de sistemas de transporte
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/registers_style.css" />
@@ -19,47 +19,44 @@
      ?>
      <div class="container-fluid">
        <div class="row">
-         <div class="col-md-2">
+         <div class="col-md-3">
          </div>
-         <div class="col-md-8">
+         <div class="col-md-7">
            <br>
            <?php
-               echo "Administrador acreditado: {$_SESSION['usuario']}";
+               echo "Usuario acreditado: {$_SESSION['usuario']}";
             ?>
            <br><br><br>
-           <h4>Listado de usuarios registrados: </h4>
+           <h4>Listado de sistemas de transporte registrados: </h4>
            <br>
            <table border="3">
              <?php
                $servidor = 'localhost';
                $usuario = 'root';
-               $clave = '';
+               $clave = '31081995AndSor';
                $base = 'transporte';
 
                $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-               $sql = 'select user_id, username, created, updated, rol  from users';
+               $sql = 'select * from sistema_transporte';
                $ejec_sql = $conexion -> prepare($sql);
                $ejec_sql -> execute();
 
               echo "<tr>";
                 echo "<td>";
-                echo "ID usuario";
+                echo "ID sistema";
                 echo "</td>";
                 echo "<td>";
-                echo "Nombre de usuario";
+                echo "Nombre";
                 echo "</td>";
                 echo "<td>";
-                /*echo "Contraseña";
+                echo "País de procedencia";
                 echo "</td>";
-                echo "<td>";*/
+                echo "<td>";
                 echo "Fecha de creación";
                 echo "</td>";
                 echo "<td>";
                 echo "Fecha de edición";
-                echo "</td>";
-                echo "<td>";
-                echo "Rol";
                 echo "</td>";
                 echo "<td>";
                 echo "";
@@ -68,28 +65,21 @@
                 echo "";
                 echo "</td>";
                 echo "</tr>";
-                while($fila = $ejec_sql -> fetch(PDO::FETCH_ASSOC)){
+               while($fila = $ejec_sql -> fetch(PDO::FETCH_ASSOC)){
                  echo "<tr>";
                  foreach($fila as $campo){
                    echo "<td>";
-                   //echo $campo;
-                   if (($campo == "1") && ($fila["rol"] == "1")) {
-                     echo "Administrador";
-                   }else if ($campo == "0"){
-                     echo "Usuario";
-                   }else{
-                     echo "$campo";
-                   }
+                   echo $campo;
                    echo "</td>";
                  }
                  echo "<td>";
-                 echo "<a href='Eliminacion_usuarios.php?user_id=".$fila['user_id']."'>Eliminar</a>";
+                 echo "<a href='Eliminacion_sist_transporte.php?sistema_id=".$fila['sistema_id']."'>Eliminar</a>";
                  //echo "<form class=\"delete_driver\" action=\"Eliminacion_usuarios.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"chofer_id\" class=\"btn btn-danger\">Eliminar</button>";
                  //echo "</form>";
                  echo "</td>";
                  echo "<td>";
-                 echo "<a href='Carga_usuario.php?user_id=".$fila['user_id']."'>Editar</a>";
+                 echo "<a href='Carga_sist_transporte.php?sistema_id=".$fila['sistema_id']."'>Editar</a>";
                  //echo "<form class=\"update_driver\" action=\"Carga_usuario.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"editado\" class=\"btn btn-success\">Editar</button>";
                  //echo "</form>";
@@ -99,8 +89,8 @@
               ?>
            </table>
            <br>
-           <form class="create_driver" action="Nuevo_usuario.php" method="POST">
-             <button type="submit" class="btn btn-outline-primary">Agregar nuevo usuario</button>
+           <form class="create_system" action="Nuevo_sist_transporte.php" method="POST">
+             <button type="submit" class="btn btn-outline-primary">Agregar nuevo sistema de transporte</button>
              <br>
            </form>
          </div>
