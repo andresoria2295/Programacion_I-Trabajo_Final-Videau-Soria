@@ -1,78 +1,9 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.smth_container{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: url(../imagenes); /*localiza imagen en carpeta*/
-  background-repeat: center;
+body{
+  background: url(../imagenes/img2.jpg); /*localiza imagen en carpeta*/
+  background-repeat: no-repeat;
   /*background-repeat: repeat-x;  repite la imagen de manera horizontal*/
-  background-position: center; /*Si colocara center 0 se centra pero no lo desplaza de arriba*/
-}
-
-.smth_1{
-  /*border: 2px solid green;*/
-  background-color: transparent;
-  padding: 2em;
-  width: 35%;
-  position: absolute;
-  right: 110px;
-  top: 20px;
-
-}
-
-.col-md-4{
-  bottom: 200px;
-  height: 400px;
-  position: relative;
-  text-align: center;
-}
-
-}
-.formulario{
-  width: 50%;
-  background: #fff;
-  margin: 20px 50px;
-  padding: 30px;
-  border: 2px solid #000;
-  display: inline-block;
-  position: relative;
-  top:;
-  bottom:;
-  right: 250px;
-  left:;
-}
-
-h2{
-  text-align: center;
-}
-
-.color{
-  Background-color: #19E431;
-  Color: white;
-}
-
-.forgot_it{
-  margin-right: 5px;
-}
-
-a:link { /*Para enlaces*/
-  color: #2471A3;
-}
-
-a:hover {
-  color: #3498DB;
-}
-
-a:active {
-  color: #1A5276;
-}
-
-a:visited{
-  color: #832A79;
+  background-attachment: fixed; /*Permite hacer un scroll en la imagen*/
+  /*background-attachment: scroll; efectua un scroll completo con imagen*/
+  /*color: #fff;*/
+  background-position: /*Si colocara center 0 se centra pero no lo desplaza de arriba*/
 }
