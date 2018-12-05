@@ -6,6 +6,7 @@
       Registro de usuarios
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/registers_style.css" />
   </head>
   <body>
     <?php
@@ -32,12 +33,12 @@
              <?php
                $servidor = 'localhost';
                $usuario = 'root';
-               $clave = '31081995AndSor';
+               $clave = '';
                $base = 'transporte';
 
                $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-               $sql = 'select * from usuario';
+               $sql = 'select user_id, username, created, updated, rol  from users';
                $ejec_sql = $conexion -> prepare($sql);
                $ejec_sql -> execute();
 
@@ -49,9 +50,9 @@
                 echo "Nombre de usuario";
                 echo "</td>";
                 echo "<td>";
-                echo "Contraseña";
+                /*echo "Contraseña";
                 echo "</td>";
-                echo "<td>";
+                echo "<td>";*/
                 echo "Fecha de creación";
                 echo "</td>";
                 echo "<td>";
@@ -67,15 +68,15 @@
                 echo "";
                 echo "</td>";
                 echo "</tr>";
-               while($fila = $ejec_sql -> fetch(PDO::FETCH_ASSOC)){
+                while($fila = $ejec_sql -> fetch(PDO::FETCH_ASSOC)){
                  echo "<tr>";
                  foreach($fila as $campo){
                    echo "<td>";
                    //echo $campo;
-                   if (($campo == "1") && ($campo[$fila] != $campo[0])) {
-                     echo "administrador";
+                   if (($campo == "1") && ($fila["rol"] == "1")) {
+                     echo "Administrador";
                    }else if ($campo == "0"){
-                     echo "usuario";
+                     echo "Usuario";
                    }else{
                      echo "$campo";
                    }
@@ -99,11 +100,17 @@
            </table>
            <br>
            <form class="create_driver" action="Nuevo_usuario.php" method="POST">
-             <button type="submit" class="btn btn-primary">Agregar nuevo usuario</button>
+             <button type="submit" class="btn btn-outline-primary">Agregar nuevo usuario</button>
              <br>
            </form>
          </div>
-         <div class="col-md-2">
+         <div class="col-md-1">
+         </div>
+         <div class="col-md-1">
+           <br>
+           <form class="quit" action="Login.html" method="POST">
+             <button type="submit" class="btn btn-outline-secondary">Salir</button>
+           </form>
          </div>
        </div>
      </div>

@@ -6,6 +6,7 @@
       Retorno
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
   </head>
   <body>
     <div class="container-fluid">

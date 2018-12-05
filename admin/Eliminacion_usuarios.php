@@ -9,14 +9,14 @@
   $id = $_GET['user_id'];
   $servidor = 'localhost';
   $usuario = 'root';
-  $clave = '31081995AndSor';
+  $clave = '';
   $base = 'transporte';
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
   $registro = array('user_id' => $id);
 
-  $sql = "DELETE FROM usuario WHERE user_id = :user_id";
+  $sql = "DELETE FROM users WHERE user_id = :user_id";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute($registro);
   //echo "$id";

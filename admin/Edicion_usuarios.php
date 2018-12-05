@@ -7,13 +7,13 @@
   }
 
   $user = $_POST['usuario'];
-  $pass = $_POST['clave'];
+  $pass = password_hash($_POST['clave'], PASSWORD_BCRYPT);
   $rol = $_POST['rol'];
   $id = $_POST['usuario_id'];
 
   $servidor = 'localhost';
   $usuario = 'root';
-  $clave = '31081995AndSor';
+  $clave = '';
   $base = 'transporte';
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
@@ -24,7 +24,7 @@
 */
   $registro = array('username' => $user, 'password' => $pass, 'rol' => $rol, 'user_id' => $id);
 
-  $sql = "UPDATE usuario SET username = :username, password = :password, rol = :rol WHERE user_id = :user_id";
+  $sql = "UPDATE users SET username = :username, password = :password, rol = :rol WHERE user_id = :user_id";
   $ejec_sql = $conexion-> prepare($sql);
   $ejec_sql -> execute($registro);
 

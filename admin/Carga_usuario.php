@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Edición de registro</title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
   </head>
   <body>
     <div class="container-fluid">
@@ -23,7 +24,7 @@
            ?>
           <br><br><br>
           <h2>Edición de registro</h2>
-          <h5>Completar los siguientes campos</h5>
+          <h5>Recompletar los siguientes campos</h5>
           <br><br>
           <form class="register" action="Edicion_usuarios.php" method="POST">
 
@@ -32,12 +33,12 @@
 
            $servidor ='localhost';
            $usuario = 'root';
-           $clave = '31081995AndSor';
+           $clave = '';
            $base = 'transporte';
 
            $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-           $sql = "select * from usuario";
+           $sql = "select * from users";
            $ejec_sql = $conexion -> prepare($sql);
            $ejec_sql -> execute();
 
@@ -53,7 +54,7 @@
                  echo "</div>";
                  echo "<div class=\"form-group\">";
                    echo "<label for=\"clave\">Contraseña: </label>";
-                   echo "<input type=\"password\" class=\"form-control\" name=\"clave\" id=\"pass\" value=\"$fila[password]\">";
+                   echo "<input type=\"password\" class=\"form-control\" name=\"clave\" id=\"pass\" >";
                    echo "<small id=\"passwordHelp\" class=\"form-text text-muted\">Requerimiento mínimo de 8 caracteres.</small>";
                  echo "</div>";
                  echo "<br>";
@@ -100,11 +101,19 @@
            echo "<br><br>";
            */
           ?>
-          <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Aceptar</button>
+          <button type="submit" class="btn btn-outline-primary">Aceptar</button>
         </form>
         <br><br>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-1">
+        <br>
+        <form class="quit" action="Login.html" method="POST">
+          <button type="submit" class="btn btn-outline-secondary">Salir</button>
+        </form>
       </div>
      </div>
    </div>
