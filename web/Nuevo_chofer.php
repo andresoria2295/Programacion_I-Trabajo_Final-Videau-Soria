@@ -53,13 +53,7 @@
             <div class="form-row">
               <div class="form-group col-md-10">
                 <label for="system_id">Medio de transporte</label>
-                <select id="system_id" name="system_id" class="form-control">
-                  <option selected>seleccionar...</option>
-                  <option value="1">100</option>
-                  <option value="2">101</option>
-                  <option value="3">102</option>
-                  <option value="4">104</option>
-                </select>
+                <input type="text" class="form-control" name="system_id" id="system_id" placeholder="">
               </div>
               <div class="form-group col-md-2">
                 <label for="vehicle_id">Vehículo</label>

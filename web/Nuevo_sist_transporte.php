@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Creación de registro vehículo
+      Creación de sistema de transporte
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
@@ -26,34 +26,20 @@
             echo "Usuario acreditado: {$_SESSION['usuario']}";
             ?>
           <br><br><br>
-          <h2>Creación de registro vehículo</h2>
+          <h2>Creación de sistema de transporte</h2>
           <h5>Completar los siguientes campos</h5>
           <br><br>
-          <form class="register" action="Creacion_vehiculos.php" method="POST">
+          <form class="register" action="Creacion_sist_transporte.php" method="POST">
             <div class="form-row">
               <div class="form-group col-md-12">
-                <label for="patente">Dominio</label>
-                <input type="text" class="form-control" name="patente" id="patente" placeholder="Patente del vehículo">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="Sistema de transporte">
               </div>
             </div>
             <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="patente_anio">Año de dominio</label>
-                <input type="text" class="form-control" name="patente_anio" id="patente_anio" placeholder="">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="fabric_anio">Año de fabricación</label>
-                <input type="text" class="form-control" name="fabric_anio" id="fabric_anio" placeholder="">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-9">
-                <label for="nombre_marca">Marca</label>
-                <input type="text" class="form-control" name="nombre_marca" id="nombre_marca">
-              </div>
-              <div class="form-group col-md-3">
-                <label for="mod">Modelo</label>
-                <input type="text" class="form-control" name="mod" id="mod" placeholder="">
+              <div class="form-group col-md-12">
+                <label for="country">País de procedencia</label>
+                <input type="text" class="form-control" name="country" id="country" placeholder="">
               </div>
             </div>
             <button type="submit" class="btn btn-outline-primary">Aceptar</button>

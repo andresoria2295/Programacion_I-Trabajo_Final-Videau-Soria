@@ -18,6 +18,12 @@
           <h2>Auditoria exportada</h2>
           <br>
           <?php
+          include_once "../config/Database.php";
+          include_once "../objects/Auditoria.php";
+          $dabs = new Database();
+          $conn = $dabs->getConnection();
+          $audit = new Auditoria($conn);
+          echo $audit->compdir;
             echo "Se ha efectuado correctamente la exportación de auditoria.";
            ?>
            <br><br>

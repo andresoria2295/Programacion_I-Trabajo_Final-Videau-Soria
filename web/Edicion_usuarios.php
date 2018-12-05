@@ -7,7 +7,7 @@
   }
 
   $user = $_POST['usuario'];
-  $pass = $_POST['clave'];
+  $pass = password_hash($_POST['clave'], PASSWORD_BCRYPT);
   $rol = $_POST['rol'];
   $id = $_POST['usuario_id'];
 

@@ -33,11 +33,11 @@
              <button type="submit" class="btn btn-primary btn-lg btn-block">Registro de Choferes</button>
              <br>
            </form>
-           <form class="audit_register" action="Registro_vehiculos.php" method="POST">
+           <form class="Registro_vehiculos" action="Registro_vehiculos.php" method="POST">
              <button type="submit" class="btn btn-primary btn-lg btn-block">Registro de Vehículos</button>
              <br>
            </form>
-           <form class="audit_export" action="Registro_sist_transporte.php" method="POST">
+           <form class="Sist_transp" action="Registro_sist_transporte.php" method="POST">
              <button type="submit" class="btn btn-primary btn-lg btn-block">Sistemas de Transporte</button>
            </form>
           </div>

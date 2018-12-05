@@ -8,44 +8,31 @@
   <?php
     session_start();
 
-    $servidor = "localhost";
-    $usuario = "root";
-    $clave = "31081995AndSor";
-    $base = "transporte";
+    // Include objects
+    include_once "../config/Database.php";
+    include_once "../objects/Usuario.php";
 
-    $user = $_POST["usuario"];
-    $password = $_POST["clave"];
+    $databaseObject = new Database();
+    $db = $databaseObject->getConnection();
 
-    $_SESSION['usuario'] = $user;
+    $usr = new Usuario($db);
 
-    $conectar = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
+    $usr->username = $_POST["usuario"];
+    $usr->password = $_POST["clave"];
 
-    $query = "SELECT * FROM users WHERE username = :usuario AND password = :clave";
-    $stmt = $conectar->prepare($query);
+    $_SESSION['usuario'] = $usr->username;
 
-    // Bind
-    $stmt->bindParam(":usuario", $user);
-    $stmt->bindParam(":clave", $password);
+    if($usr->exists() && password_verify($_POST["clave"], $usr->getHash())){
 
-    //echo json_encode(array("mensaje"=>$user));
-    //echo json_encode(array("mensaje"=>$password));
-    $stmt->execute();
-
-    $cantidad = $stmt->rowCount();
-
-    if($cantidad > 0){
-      while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-          if($row["rol"] == "1"){
-            header('location: Administracion.php');
-          }else if($row["rol"] == "0"){
-            header('location: Usuario.php');
-          }else{
-            header('location: Retorno_login.php');
-          }
+      if($usr->isAdmin()){
+        header('location: Administracion.php');
+      }else{
+        header('location: Usuario.php');
       }
-    }else {
+    }else{
       header('location: Retorno_login.php');
     }
+
     ?>
   </body>
 </html>

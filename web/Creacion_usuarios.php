@@ -7,7 +7,7 @@
   }
 
   $user = $_POST['usuario'];
-  $pass = $_POST['clave'];
+  $pass = password_hash($_POST['clave'], PASSWORD_BCRYPT);
   $rol = $_POST['rol'];
 
 /*
@@ -28,9 +28,9 @@
   $ejec_sql = $conexion->prepare($sql);
   $ejec_sql -> execute();
 
-  $registro = array('username' => $user, 'password' => $pass, 'rol' => $rol);
+  $registro = array('username' => $user, 'password' => $pass, 'rol' => $rol, 'created' => date('Y-m-d H:i:s'));
 
-  $sql = "INSERT INTO users (username, password, rol) VALUES (:username, :password, :rol)";
+  $sql = "INSERT INTO users (username, password, rol, created) VALUES (:username, :password, :rol, :created)";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute($registro);
 

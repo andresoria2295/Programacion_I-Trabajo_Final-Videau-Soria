@@ -54,7 +54,7 @@
                  echo "</div>";
                  echo "<div class=\"form-group\">";
                    echo "<label for=\"clave\">Contraseña: </label>";
-                   echo "<input type=\"password\" class=\"form-control\" name=\"clave\" id=\"pass\" value=\"$fila[password]\">";
+                   echo "<input type=\"password\" class=\"form-control\" name=\"clave\" id=\"pass\" >";
                    echo "<small id=\"passwordHelp\" class=\"form-text text-muted\">Requerimiento mínimo de 8 caracteres.</small>";
                  echo "</div>";
                  echo "<br>";

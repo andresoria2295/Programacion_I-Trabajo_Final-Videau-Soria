@@ -6,7 +6,7 @@
     exit;
   }
 
-  $id = $_POST['usuario_id'];
+  $id = $_POST['chofer_id'];
   $name = $_POST['name'];
   $surname = $_POST['surname'];
   $dni = $_POST['dni'];

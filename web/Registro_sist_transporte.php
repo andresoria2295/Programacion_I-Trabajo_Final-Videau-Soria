@@ -73,13 +73,13 @@
                    echo "</td>";
                  }
                  echo "<td>";
-                 echo "<a href='#?id=".$fila['vehiculo_id']."'>Eliminar</a>";
+                 echo "<a href='Eliminacion_sist_transporte.php?sistema_id=".$fila['sistema_id']."'>Eliminar</a>";
                  //echo "<form class=\"delete_driver\" action=\"Eliminacion_usuarios.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"chofer_id\" class=\"btn btn-danger\">Eliminar</button>";
                  //echo "</form>";
                  echo "</td>";
                  echo "<td>";
-                 echo "<a href='#?id=".$fila['vehiculo_id']."'>Editar</a>";
+                 echo "<a href='Carga_sist_transporte.php?sistema_id=".$fila['sistema_id']."'>Editar</a>";
                  //echo "<form class=\"update_driver\" action=\"Carga_usuario.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"editado\" class=\"btn btn-success\">Editar</button>";
                  //echo "</form>";
@@ -89,7 +89,7 @@
               ?>
            </table>
            <br>
-           <form class="create_driver" action="#" method="POST">
+           <form class="create_system" action="Nuevo_sist_transporte.php" method="POST">
              <button type="submit" class="btn btn-outline-primary">Agregar nuevo sistema de transporte</button>
              <br>
            </form>

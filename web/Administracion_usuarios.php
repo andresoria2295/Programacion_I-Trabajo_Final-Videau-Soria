@@ -19,9 +19,9 @@
      ?>
      <div class="container-fluid">
        <div class="row">
-        <!-- <div class="col-md-1">
-        </div> -->
-         <div class="col-md-11">
+         <div class="col-md-2">
+         </div>
+         <div class="col-md-8">
            <br>
            <?php
                echo "Administrador acreditado: {$_SESSION['usuario']}";
@@ -38,7 +38,7 @@
 
                $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-               $sql = 'select * from users';
+               $sql = 'select user_id, username, created, updated, rol  from users';
                $ejec_sql = $conexion -> prepare($sql);
                $ejec_sql -> execute();
 
@@ -50,9 +50,9 @@
                 echo "Nombre de usuario";
                 echo "</td>";
                 echo "<td>";
-                echo "Contraseña";
+                /*echo "Contraseña";
                 echo "</td>";
-                echo "<td>";
+                echo "<td>";*/
                 echo "Fecha de creación";
                 echo "</td>";
                 echo "<td>";
@@ -68,15 +68,15 @@
                 echo "";
                 echo "</td>";
                 echo "</tr>";
-               while($fila = $ejec_sql -> fetch(PDO::FETCH_ASSOC)){
+                while($fila = $ejec_sql -> fetch(PDO::FETCH_ASSOC)){
                  echo "<tr>";
                  foreach($fila as $campo){
                    echo "<td>";
                    //echo $campo;
-                   if (($campo == "1") && ($campo[$fila] != $campo[0])) {
-                     echo "administrador";
+                   if (($campo == "1") && ($fila["rol"] == "1")) {
+                     echo "Administrador";
                    }else if ($campo == "0"){
-                     echo "usuario";
+                     echo "Usuario";
                    }else{
                      echo "$campo";
                    }
@@ -104,8 +104,8 @@
              <br>
            </form>
          </div>
-         <!-- <div class="col-md-">
-         </div>-->
+         <div class="col-md-1">
+         </div>
          <div class="col-md-1">
            <br>
            <form class="quit" action="Login.html" method="POST">
