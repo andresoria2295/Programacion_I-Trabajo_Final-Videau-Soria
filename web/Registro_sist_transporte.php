@@ -26,7 +26,7 @@
            <?php
                echo "Usuario acreditado: {$_SESSION['usuario']}";
             ?>
-           <br><br><br><br>
+           <br><br><br>
            <h4>Listado de sistemas de transporte registrados: </h4>
            <br>
            <table border="3">

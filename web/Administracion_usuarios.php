@@ -19,9 +19,9 @@
      ?>
      <div class="container-fluid">
        <div class="row">
-         <div class="col-md-2">
-         </div>
-         <div class="col-md-8">
+        <!-- <div class="col-md-1">
+        </div> -->
+         <div class="col-md-11">
            <br>
            <?php
                echo "Administrador acreditado: {$_SESSION['usuario']}";
@@ -38,7 +38,7 @@
 
                $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-               $sql = 'select * from usuario';
+               $sql = 'select * from users';
                $ejec_sql = $conexion -> prepare($sql);
                $ejec_sql -> execute();
 
@@ -104,8 +104,8 @@
              <br>
            </form>
          </div>
-         <div class="col-md-1">
-         </div>
+         <!-- <div class="col-md-">
+         </div>-->
          <div class="col-md-1">
            <br>
            <form class="quit" action="Login.html" method="POST">

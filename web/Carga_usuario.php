@@ -38,7 +38,7 @@
 
            $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-           $sql = "select * from usuario";
+           $sql = "select * from users";
            $ejec_sql = $conexion -> prepare($sql);
            $ejec_sql -> execute();
 

@@ -67,8 +67,8 @@ class Auditoria{
         $stmt->execute();
 
         // Open file
-        $file = fopen("/proyecto/audits/Auditorias.txt", "w");
-        
+        $file = fopen("Auditorias.txt", "w");
+
         // Fetch
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $str = $row["auditoria_id"] . " " . $row["fecha_acceso"] . " " . $row["user"] . " " . $row["response_time"] . " " . $row["created"] . "," . PHP_EOL;

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Creación de registro chofer
+      Creación de registro vehiculo
     </title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
@@ -26,10 +26,10 @@
             echo "Usuario acreditado: {$_SESSION['usuario']}";
             ?>
           <br><br><br>
-          <h2>Creación de registro chofer</h2>
+          <h2>Creación de registro vehiculo</h2>
           <h5>Completar los siguientes campos</h5>
           <br><br>
-          <form class="register" action="Creacion_choferes.php" method="POST">
+          <form class="register" action="Creacion_vehiculos.php" method="POST">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="name">Nombre</label>

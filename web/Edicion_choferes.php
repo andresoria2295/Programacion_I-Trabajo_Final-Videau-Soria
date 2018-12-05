@@ -6,7 +6,7 @@
     exit;
   }
 
-  $id = $_POST['driver_id'];
+  $id = $_POST['usuario_id'];
   $name = $_POST['name'];
   $surname = $_POST['surname'];
   $dni = $_POST['dni'];
@@ -21,9 +21,11 @@
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
+/*
   $sql = "select * from chofer";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute();
+*/
 
   $registro = array('chofer_id' => $id, 'nombre' => $name, 'apellido' => $surname, 'documento' => $dni, 'email' => $email, 'vehiculo_id' => $vehicle_id, 'sistema_id' => $system_id);
 
@@ -31,5 +33,5 @@
   $ejec_sql = $conexion-> prepare($sql);
   $ejec_sql -> execute($registro);
 
-  header('location: Plataforma_transporte.php');
+  header('location: Registro_choferes.php');
  ?>

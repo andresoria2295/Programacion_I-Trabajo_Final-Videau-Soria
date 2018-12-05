@@ -24,7 +24,7 @@
 */
   $registro = array('username' => $user, 'password' => $pass, 'rol' => $rol, 'user_id' => $id);
 
-  $sql = "UPDATE usuario SET username = :username, password = :password, rol = :rol WHERE user_id = :user_id";
+  $sql = "UPDATE users SET username = :username, password = :password, rol = :rol WHERE user_id = :user_id";
   $ejec_sql = $conexion-> prepare($sql);
   $ejec_sql -> execute($registro);
 

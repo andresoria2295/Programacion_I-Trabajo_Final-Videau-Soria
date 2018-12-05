@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Registro de usuario</title>
+    <title>Edición de registro chofer</title>
     <link href="bootstrap-4.1.3-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/forms_style.css" />
   </head>
@@ -29,7 +29,7 @@
           <form class="register" action="Edicion_choferes.php" method="POST">
 
           <?php
-           $id = $_GET['id'];
+           $id = $_GET['chofer_id'];
 
            $servidor ='localhost';
            $usuario = 'root';
@@ -51,37 +51,38 @@
                 echo "<div class=\"form-row\">";
                   echo "<div class=\"form-group col-md-6\">";
                     echo "<label for=\"name\">Nombre</label>";
-                    echo "<input type=\"text\" class=\"form-control\" id= \"name\" value=\"$fila[nombre]\">";
+                    echo "<input type=\"text\" class=\"form-control\" name=\"name\" id= \"name\" value=\"$fila[nombre]\">";
                   echo "</div>";
                   echo "<div class=\"form-group col-md-6\">";
                     echo "<label for=\"surname\">Apellido</label>";
-                    echo "<input type=\"text\" class=\"form-control\" id=\"surname\" value=\"$fila[apellido]\">";
+                    echo "<input type=\"text\" class=\"form-control\" name=\"surname\" id=\"surname\" value=\"$fila[apellido]\">";
                   echo "</div>";
                 echo "</div>";
                 echo "<div class=\"form-row\">";
                   echo "<div class=\"form-group col-md-3\">";
                     echo "<label for=\"dni\">Documento</label>";
-                    echo "<input type=\"text\" class=\"form-control\" id=\"dni\" value=\"$fila[documento]\">";
+                    echo "<input type=\"text\" class=\"form-control\" name=\"dni\" id=\"dni\" value=\"$fila[documento]\">";
                   echo "</div>";
                   echo "<div class=\"form-group col-md-9\">";
                     echo "<label for=\"email\">Email</label>";
-                    echo "<input type=\"text\" class=\"form-control\" id=\"email\" value=\"$fila[email]\">";
+                    echo "<input type=\"text\" class=\"form-control\" name=\"email\" id=\"email\" value=\"$fila[email]\">";
                   echo "</div>";
                  echo "</div>";
+                  echo "<input type=\"hidden\" class=\"form-control\" name=\"usuario_id\" id=\"usuario_id\" aria-describedby=\"emailHelp\" value=\"$fila[user_id]\">"; //envio de user_id
                  echo "<div class=\"form-row\">";
                    echo "<div class=\"form-group col-md-10\">";
-                     echo "<label for=\"transp\">Medio de transporte</label>";
-                     echo "<select id=\"transp\" class=\"form-control\">";
-                       echo "<option selected>seleccionar...</option>";
+                     echo "<label for=\"system_id\">Medio de transporte</label>";
+                     echo "<select id=\"transp\" name=\"system_id\" class=\"form-control\">";
+                       echo "<option selected=\"selected\" value=\"$fila[sistema_id]\">$fila[sistema_id]</option>";
                        echo "<option value=\"1\">100</option>";
                        echo "<option value=\"2\">101</option>";
                        echo "<option value=\"3\">102</option>";
-                       //echo "<option value=\"4\"></option>";
+                       echo "<option value=\"4\">104</option>";
                      echo "</select>";
                    echo "</div>";
                    echo "<div class=\"form-group col-md-2\">";
                      echo "<label for=\"vehicle_id\">Vehículo</label>";
-                     echo "<input type=\"text\" class=\"form-control\" id=\"vehicle_id\" placeholder=\"unidad\">";
+                     echo "<input type=\"text\" class=\"form-control\" name=\"vehicle_id\" id=\"vehicle_id\" placeholder=\"unidad\" value=\"$fila[vehiculo_id]\">";
                    echo "</div>";
                  echo "</div>";
                  break;

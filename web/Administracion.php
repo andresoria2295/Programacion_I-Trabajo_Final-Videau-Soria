@@ -33,7 +33,7 @@
              <button type="submit" class="btn btn-primary btn-lg btn-block">Administración de Usuarios</button>
              <br>
            </form>
-           <form class="audit_register" action="Registro_auditoria.php" method="POST">
+           <form class="audit_register" action="Registros_auditoria.php" method="POST">
              <button type="submit" class="btn btn-primary btn-lg btn-block">Registros de Auditoría</button>
              <br>
            </form>

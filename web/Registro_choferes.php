@@ -86,13 +86,13 @@
                    echo "</td>";
                  }
                  echo "<td>";
-                 echo "<a href='Eliminacion_choferes.php?id=".$fila['chofer_id']."'>Eliminar</a>";
+                 echo "<a href='Eliminacion_choferes.php?chofer_id=".$fila['chofer_id']."'>Eliminar</a>";
                  //echo "<form class=\"delete_driver\" action=\"Eliminacion_usuarios.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"chofer_id\" class=\"btn btn-danger\">Eliminar</button>";
                  //echo "</form>";
                  echo "</td>";
                  echo "<td>";
-                 echo "<a href='Carga_chofer.php?id=".$fila['chofer_id']."'>Editar</a>";
+                 echo "<a href='Carga_chofer.php?chofer_id=".$fila['chofer_id']."'>Editar</a>";
                  //echo "<form class=\"update_driver\" action=\"Carga_usuario.php\" method=\"POST\">";
                  //echo "<button type=\"submit\" name=\"editado\" class=\"btn btn-success\">Editar</button>";
                  //echo "</form>";

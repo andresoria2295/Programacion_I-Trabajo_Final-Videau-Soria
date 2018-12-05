@@ -98,7 +98,7 @@
               ?>
            </table>
            <br>
-           <form class="create_driver" action="#" method="POST">
+           <form class="create_driver" action="Nuevo_vehiculo.php" method="POST">
              <button type="submit" class="btn btn-outline-primary">Agregar nuevo vehículo</button>
              <br>
            </form>

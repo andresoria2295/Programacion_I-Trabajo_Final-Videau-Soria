@@ -20,7 +20,7 @@
 
     $conectar = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
 
-    $query = "SELECT * FROM usuario WHERE username = :usuario AND password = :clave";
+    $query = "SELECT * FROM users WHERE username = :usuario AND password = :clave";
     $stmt = $conectar->prepare($query);
 
     // Bind

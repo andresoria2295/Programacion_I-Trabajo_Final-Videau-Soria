@@ -16,7 +16,7 @@
 
   $registro = array('user_id' => $id);
 
-  $sql = "DELETE FROM usuario WHERE user_id = :user_id";
+  $sql = "DELETE FROM users WHERE user_id = :user_id";
   $ejec_sql = $conexion -> prepare($sql);
   $ejec_sql -> execute($registro);
   //echo "$id";
