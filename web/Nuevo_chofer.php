@@ -43,7 +43,7 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="surname">Apellido</label>
-                <input type="text" class="form-control" name="surname "id="surname" placeholder="apellido del conductor">
+                <input type="text" class="form-control" name="surname" id="surname" placeholder="apellido del conductor">
               </div>
             </div>
             <div class="form-row">

@@ -51,7 +51,8 @@ class Auditoria{
         }
     }
 
-    public function exportAudit($fecha1, $fecha2){
+    function exportAudit($fecha1, $fecha2){
+
         // Query and stmt
         $query = "SELECT auditoria_id, fecha_acceso, user, response_time, created from auditoria where fecha_acceso between :f1 and :f2";
         $stmt = $this->connection->prepare($query);
@@ -67,26 +68,25 @@ class Auditoria{
         // Execute
         $stmt->execute();
 
-        $algo = $_SERVER["DOCUMENT_ROOT"] . $this->audit_dir;
+        // Create temp file
+        $tmpName = tempnam(sys_get_temp_dir(), 'data'); // Gets temp directory
+        $file = fopen($tmpName, 'w'); // Creates file in temp directory
 
-        if (!file_exists($algo)) {
-            //si lo que esta en $carpeta no existe se hace lo siguiente
-            if (mkdir($algo, 0777, true));
-            //se crea lo que esta en $carpeta con los permisos 0777
-        };
-        
-        
-        // Open file
-        $file = fopen($algo. "/audit.txt", "w");
-       
-        // Fetch
+        // Writes on temp file
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $str = $row["auditoria_id"] . " " . $row["fecha_acceso"] . " " . $row["user"] . " " . $row["response_time"] . " " . $row["created"] . "," . PHP_EOL;
+            echo $str;
             fwrite($file, $str);
         }
 
-        // Close file
-        fclose($file);
+        // Headers to download file
+        header('Content-Description: File Transfer');
+        header('Content-Disposition: attachment; filename=audits.txt');
+        header('Content-Length: ' . filesize($tmpName));
+
+        ob_clean(); // This function discards the contents of the output buffer.
+        flush(); // Flushes the system write buffers of PHP and whatever backend PHP is using (CGI, a web server, etc).
+        readfile($tmpName);
     }
 
 }

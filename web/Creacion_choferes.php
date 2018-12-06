@@ -6,6 +6,8 @@
     exit;
   }
 
+  print_r($_POST);
+
   $name = $_POST['name'];
   $surname = $_POST['surname'];
   $dni = $_POST['dni'];
@@ -19,10 +21,10 @@
   $base = 'transporte';
 
   $conexion = new PDO("mysql: host=$servidor; dbname=$base", $usuario, $clave);
-
+/*
   $sql = 'select * from chofer';
   $ejec_sql = $conexion->prepare($sql);
-  $ejec_sql -> execute();
+  $ejec_sql -> execute();*/
 
   $registro = array('nombre' => $name, 'apellido' => $surname, 'documento' => $dni, 'email' => $email, 'vehiculo_id' => $vehicle_id, 'sistema_id' => $system_id);
   echo "<pre>";
